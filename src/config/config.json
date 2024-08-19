@@ -1,0 +1,42 @@
+{
+    "path": {
+        "input_files": "./output/label/label_from_json.csv",
+        "test_files": "./output/label/test_dataset.csv",
+        "pretrained": "DEF",
+        "logging_config": "./src/config/logging_config.json",
+        "position": "./default_is_model_folder/position.csv",
+        "subdetector_name": "./default_is_model_folder/subdetector_name.csv",
+        "log": "./stable_to_model_folder/logging.log",
+        "model": ""
+    },
+    "folder": {
+        "dataset": "./dataset/dataset202312/data",
+        "feature": "./",
+        "vectorize": "./output/vectorize/dataset202312_data",
+        "model": "./output/model/",
+        "predict": "./output/predict",
+        "label": "./output/label"
+    },
+    "model": {
+        "model_name": "VGG16",
+        "batch_size": 4,
+        "learning_rate": 1e-5,
+        "rotation": [0, 0],
+        "width_shift": 0.0,
+        "height_shift": 0.0,
+        "zoom": [1.0, 1.0],
+        "shear": [0, 0, 0, 0],
+        "fill": null,
+        "horizontal_flip": 0,
+        "train_ratio": 0.8,
+        "epochs": 15,
+        "shard": 8,
+        "slice": 8,
+        "print_information": "",
+        "save_image": false
+    },
+    "classify": false,
+    "train": true,
+    "predict": false,
+    "unlearn": false
+}
