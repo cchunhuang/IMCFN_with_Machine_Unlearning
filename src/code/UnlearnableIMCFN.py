@@ -48,15 +48,13 @@ class UnlearnableIMCFN:
             SEED_VALUE = 42
             random.seed(SEED_VALUE)
             random.shuffle(labels)
-
-            shard_size = -(-len(labels) // self.config.model.shard) # ceil division
-            slice_size = -(-shard_size // self.config.model.slice)  # ceil division
-            
-            # self.input_data[shard_idx][slice_idx][data_idx] = [file_name, label]
-            self.input_data = [[[labels[k] 
-                        for k in range(j, min(j + slice_size, min(i + shard_size, len(labels))))] 
-                        for j in range(i, min(i + shard_size, len(labels)), slice_size)] 
-                        for i in range(0, len(labels), shard_size)]
+                
+            self.input_data = [[[] for j in range(self.config.model.slice)] for i in range(self.config.model.shard)]
+            for i in range(0, len(labels), self.config.model.batch_size):
+                shard_idx = i // self.config.model.batch_size % self.config.model.shard
+                slice_idx = i // self.config.model.batch_size // self.config.model.shard % self.config.model.slice
+                for j in range(i, min(i + self.config.model.batch_size, len(labels))):
+                    self.input_data[shard_idx][slice_idx].append(labels[j])
             
             self.savePosition()
         
@@ -158,14 +156,18 @@ class UnlearnableIMCFN:
                 
                 result = self.imcfn.model(True)
                 
-                TP += result['TP']
-                TN += result['TN']
-                FP += result['FP']
-                FN += result['FN']
-                
+                train_acc = [{"epoch": i, "accuracy": result['train_acc'][i]} for i in range(len(result['train_acc']))]
                 train_loss = [{"epoch": i, "loss": result['train_loss'][i]} for i in range(len(result['train_loss']))]
+                val_acc = [{"epoch": i, "accuracy": result['valid_acc'][i]} for i in range(len(result['valid_acc']))]
                 val_loss = [{"epoch": i, "loss": result['valid_loss'][i]} for i in range(len(result['valid_loss']))]
-                score.append({"model_name": subdetector_name[shard_idx][slice_idx + 1], "train_loss": train_loss, "val_loss": val_loss})
+                test_acc = result['test_result']['accuracy']
+                
+                score.append({"model_name": subdetector_name[shard_idx][slice_idx + 1], "train_acc": train_acc, "train_loss": train_loss, "val_acc": val_acc, "val_loss": val_loss, "test_acc": test_acc})
+                
+            TP += result['TP']
+            TN += result['TN']
+            FP += result['FP']
+            FN += result['FN']
         
         # -----save model-----
         

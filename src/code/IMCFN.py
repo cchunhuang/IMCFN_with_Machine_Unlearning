@@ -95,8 +95,37 @@ class IMCFN(detector):
             train_result = self.vgg16.trainModel(self.config.model.epochs, self.config.path.log, self.config.path.model, self.config.model.print_information)
             
             if os.path.exists(self.config.path.test_files):
-                test_result = self.predict(self.config.path.test_files)
+                test_predict = self.predict(self.config.path.test_files)
+                
+                test_labels = {}
+                with open(self.config.path.test_files, newline='') as csvfile:
+                    reader = csv.DictReader(csvfile)
+                    for row in reader:
+                        test_labels[row['filename']] = row['label']
+                            
+                TP = TN = FP = FN = 0
+                for filename in test_predict.keys():
+                    true_label = test_labels[filename]
+                    prediction = test_predict[filename]
+                    if true_label == prediction:
+                        if true_label == 1:
+                            TP += 1
+                        else:
+                            TN += 1
+                    elif true_label == 0:
+                        FN += 1
+                    else:
+                        FP += 1
+                        
+                accuracy = (TP + TN) / (TP + TN + FP + FN)
+                precision = TP / (TP + FP) if (TP + FP) != 0 else 0
+                recall = TP / (TP + FN) if (TP + FN) != 0 else 0
+                f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) != 0 else 0
+                
+                test_result = {'TP': TP, 'TN': TN, 'FP': FP, 'FN': FN, 'accuracy': accuracy, 'precision': precision, 'recall': recall, 'f1_score': f1_score}
                 train_result['test_result'] = test_result
+                
+                self.logger.info(f"Testing acc: {accuracy}")
             
             return train_result
         else:

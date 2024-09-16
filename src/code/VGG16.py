@@ -168,16 +168,17 @@ class VGG16:
                 iter += 1 # update the iteration count
                 
                 # possitive: malware, negative: benignware(label = 0)
-                for i in range(len(label)):
-                    if label[i] == predicted[i]:
-                        if label[i] == 1:
-                            TP += 1
+                if epoch == epochs - 1:
+                    for i in range(len(label)):
+                        if label[i] == predicted[i]:
+                            if label[i] == 1:
+                                TP += 1
+                            else:
+                                TN += 1
+                        elif label[i] == 0:
+                            FN += 1
                         else:
-                            TN += 1
-                    elif label[i] == 0:
-                        FN += 1
-                    else:
-                        FP += 1
+                            FP += 1
                         
             self.logger.info('Training acc: %.3f | loss: %.3f' % (correct_train / total_train, train_loss / iter))
             
@@ -201,11 +202,24 @@ class VGG16:
                     correct_valid += (predicted == label).sum()
                     valid_loss += valid_loss_c.item()
                     iter2 += 1
+                    
+                    # possitive: malware, negative: benignware(label = 0)
+                    if epoch == epochs - 1:
+                        for i in range(len(label)):
+                            if label[i] == predicted[i]:
+                                if label[i] == 1:
+                                    TP += 1
+                                else:
+                                    TN += 1
+                            elif label[i] == 0:
+                                FN += 1
+                            else:
+                                FP += 1
             
             self.logger.info('Validation acc: %.3f | loss: %.3f' % (correct_valid / total_valid, valid_loss / iter2))
                                             
-            train_acc.append(100 * (correct_train / total_train).to(self.device)) # training accuracy
-            valid_acc.append(100 * (correct_valid / total_valid).to(self.device))    # validation accuracy
+            train_acc.append((correct_train / total_train).cpu().tolist()) # training accuracy
+            valid_acc.append((correct_valid / total_valid).cpu().tolist())    # validation accuracy
             train_losses.append((train_loss / iter))                    # train loss 
             valid_losses.append((valid_loss / iter2))    # validate loss
 
