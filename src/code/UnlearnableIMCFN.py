@@ -182,7 +182,10 @@ class UnlearnableIMCFN:
         f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) != 0 else 0
         final_result = {"TP": TP, "TN": TN, "FP": FP, "FN": FN, "accuracy": accuracy, "precision": precision, "recall": recall, "f1_score": f1_score}
         
-        with open(os.path.join(self.model_folder, "score.json"), 'w') as f:
+        if self.config.path.score is None or self.config.path.score == '':
+            self.config.path.score = os.path.join(self.model_folder, "score.json")
+        
+        with open(self.config.path.score, 'w') as f:
             json.dump([{"final_result": final_result}] + score, f, indent=4)
         
     def predict(self):
@@ -219,7 +222,10 @@ class UnlearnableIMCFN:
         
         result = [{"name": file_name, "detection": max(vote[file_name], key=vote[file_name].get)} for file_name in predict_result.keys()]
         
-        with open(os.path.join(self.config.folder.predict, "predict_result.json"), 'w') as f:
+        if self.config.path.result is None or self.config.path.result == '':
+            self.config.path.result = os.path.join(self.model_folder, "predict_result.json")
+        
+        with open(self.config.path.result, 'w') as f:
             json.dump(result, f, indent=4)
     
     def unlearn(self):

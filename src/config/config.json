@@ -7,7 +7,9 @@
         "position": "./default_is_model_folder/position.csv",
         "subdetector_name": "./default_is_model_folder/subdetector_name.csv",
         "log": "./stable_to_model_folder/logging.log",
-        "model": ""
+        "model": "",
+        "score": "",
+        "result": ""
     },
     "folder": {
         "dataset": "./dataset/archive_senior/all",
@@ -29,9 +31,9 @@
         "fill": null,
         "horizontal_flip": 0,
         "train_ratio": 0.8,
-        "epochs": 300,
-        "shard": 1,
-        "slice": 1,
+        "epochs": 10,
+        "shard": 4,
+        "slice": 4,
         "print_information": "",
         "save_image": false
     },
