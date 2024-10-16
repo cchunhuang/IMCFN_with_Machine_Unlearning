@@ -4,12 +4,12 @@
         "test_files": "./output/label/test_dataset.csv",
         "pretrained": "DEF",
         "logging_config": "./src/config/logging_config.json",
-        "position": "./default_is_model_folder/position.csv",
-        "subdetector_name": "./default_is_model_folder/subdetector_name.csv",
-        "log": "./stable_to_model_folder/logging.log",
         "model": "",
-        "score": "",
-        "result": ""
+        "log": "./stable_to_model_subfolder/logging.log",
+        "position": "./default_is_model_subfolder/position.csv",
+        "subdetector_name": "./default_is_model_subfolder/subdetector_name.csv",
+        "score": "./default_is_model_subfolder/score.json",
+        "result": "./default_is_model_subfolder/result.json"
     },
     "folder": {
         "dataset": "./dataset/archive_senior/all",
@@ -35,7 +35,8 @@
         "shard": 4,
         "slice": 4,
         "print_information": "",
-        "save_image": false
+        "save_image": false,
+        "overwrite": false
     },
     "classify": false,
     "train": true,

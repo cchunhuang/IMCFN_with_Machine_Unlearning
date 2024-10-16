@@ -5,12 +5,12 @@
             "test_files": "./output/label/test_dataset.csv",
             "pretrained": "DEF",
             "logging_config": "./src/config/logging_config.json",
-            "position": "./default_is_model_folder/position.csv",
-            "subdetector_name": "./default_is_model_folder/subdetector_name.csv",
-            "log": "./stable_to_model_folder/logging.log",
             "model": "",
-            "score": "",
-            "result": ""
+            "log": "./stable_to_model_subfolder/logging.log",
+            "position": "./default_is_model_subfolder/position.csv",
+            "subdetector_name": "./default_is_model_subfolder/subdetector_name.csv",
+            "score": "./default_is_model_subfolder/score.json",
+            "result": "./default_is_model_subfolder/result.json"
         },
         "folder": {
             "dataset": "./dataset/dataset202312/data",
@@ -47,7 +47,8 @@
             "shard": 4,
             "slice": 4,
             "print_information": "",
-            "save_image": false
+            "save_image": false,
+            "overwrite": true
         },
         "classify": false,
         "train": true,
@@ -781,7 +782,7 @@
             "family": "",
             "CPU Architecture": "MIPS",
             "file size": "824284",
-            "tags": "test"
+            "tags": "train"
         },
         {
             "filename": "21c454439063eee589c94cca8a4c330e62bf581ab633264c305427b2c0af2c93",
@@ -789,7 +790,7 @@
             "family": "",
             "CPU Architecture": "PowerPC",
             "file size": "755061",
-            "tags": "test"
+            "tags": "train"
         },
         {
             "filename": "008dff6c90220d422bd184d2b0bb73ff2cdd366e5b197ec0c915b6d5f3ac7888",
@@ -797,7 +798,7 @@
             "family": "gafgyt",
             "CPU Architecture": "ARM",
             "file size": "138232",
-            "tags": "test"
+            "tags": "train"
         },
         {
             "filename": "03125b69fc27e07668890c41976dafb8338ae041ba7ef35fe553062b27a53b45",
@@ -805,7 +806,7 @@
             "family": "gafgyt",
             "CPU Architecture": "MIPS",
             "file size": "165658",
-            "tags": "test"
+            "tags": "train"
         },
         {
             "filename": "02349220331b78e9b2511459fb266a59bfbb35e2a3cc01a2cb7dda74ea8079d2",
@@ -813,7 +814,7 @@
             "family": "gafgyt",
             "CPU Architecture": "ARM",
             "file size": "52332",
-            "tags": "test"
+            "tags": "train"
         },
         {
             "filename": "6a6e26949fc5199291792d25bb4f70ffa7a22e2a6e365cdd82a718823218116a",
@@ -821,7 +822,7 @@
             "family": "",
             "CPU Architecture": "MIPS",
             "file size": "286664",
-            "tags": "test"
+            "tags": "train"
         },
         {
             "filename": "011871e702565dfd1da343a52cf123612c25f26e63044b2ff4645df7ef17dd8c",
@@ -829,7 +830,7 @@
             "family": "",
             "CPU Architecture": "MIPS",
             "file size": "951896",
-            "tags": "test"
+            "tags": "train"
         },
         {
             "filename": "622edc9854a2f0df765dcc4839575d55785a5cfb93e68c864da9f063a19119e0",
@@ -837,7 +838,7 @@
             "family": "mirai",
             "CPU Architecture": "MIPS",
             "file size": "155428",
-            "tags": "test"
+            "tags": "train"
         },
         {
             "filename": "cf47625f52bc5b6f339d836ce3abc30cc1f8d4276e984d0e9e5d55c6d5782c72",
@@ -845,7 +846,7 @@
             "family": "",
             "CPU Architecture": "PowerPC",
             "file size": "912236",
-            "tags": "test"
+            "tags": "train"
         },
         {
             "filename": "62fe42168307c0c68cb84a219ffba399537bd614e2fa8278ea3f2a2f0e3a38e5",
@@ -853,6 +854,3206 @@
             "family": "gafgyt",
             "CPU Architecture": "ARM",
             "file size": "34604",
+            "tags": "train"
+        },
+        {
+            "filename": "029967532fcebb0262c827662dcf6c9c375add2304230deccde8b807732e4212",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "143968",
+            "tags": "train"
+        },
+        {
+            "filename": "3e4f495bafb4bda1170816abdb8eac7762f2fedaf3898cea0c3a5b0c1267faac",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "34336",
+            "tags": "train"
+        },
+        {
+            "filename": "01fa4a746bfde8e0f1837d30d1231475f3b33f83d9716cb1e9da40c1cdd2cca7",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "109446",
+            "tags": "train"
+        },
+        {
+            "filename": "098d7fe8e15dbbb825c3866db61fd0e841c43bfd8f7ac0db9579de1b0f0207ed",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "16808",
+            "tags": "train"
+        },
+        {
+            "filename": "021d501ce8b0bd3f8ee648b1f367e9a8d5e07eb1df2e1ebb8a72215d344ec3d0",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "2787768",
+            "tags": "train"
+        },
+        {
+            "filename": "02a5627dee0beeded4ca6d1c2182b15b4993a98e27662b6e008a47c58466376b",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "155541",
+            "tags": "train"
+        },
+        {
+            "filename": "62889335ad80f0548b57141666e1ea0b9eaaeaa6cf57a9b14ea60658f905b89f",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "125008",
+            "tags": "train"
+        },
+        {
+            "filename": "0a4f467f2dc2307e8585f0dfe76daac23e0e68b333a54eb15b215dffa8705762",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "49332",
+            "tags": "train"
+        },
+        {
+            "filename": "222d04632af2ced38ac5a41ef03cd8287ca9874e3a01bc38352f7f6d67b12822",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "14112",
+            "tags": "train"
+        },
+        {
+            "filename": "036f459cb883a7af3f832db0cde45020cec2c07760f87cb5f25ef60841cf7d2d",
+            "label": "malware",
+            "family": "tsunami",
+            "CPU Architecture": "PowerPC",
+            "file size": "224740",
+            "tags": "train"
+        },
+        {
+            "filename": "1e1a7af5af1f7ee3cb1618ef750a5d116f1f746576a77a99dd90d8699ab9e065",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "301065",
+            "tags": "train"
+        },
+        {
+            "filename": "7b0800e687e28149462002330ab7bbe5d770be066a772eade023af1f75d41d3e",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "1235720",
+            "tags": "train"
+        },
+        {
+            "filename": "6dbf1871be391eaacfdbd9466718bbf714d3fc69e33bfb4aa27ffee4c75af2c2",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "48738",
+            "tags": "train"
+        },
+        {
+            "filename": "1938b745eb3cd6a85fce0d043a4fc9963659c96863046374f1062c73f8ffd6f5",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "174660",
+            "tags": "train"
+        },
+        {
+            "filename": "0b516930f1eb607131fee8f72cfcee5d7e88e70a54a1a3fb9dfd530f70e0f588",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "14180",
+            "tags": "train"
+        },
+        {
+            "filename": "43fdc16b50f75317b3fe2b34993ee40fa0082668ce2b3df25581da19f75adcdc",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "17944",
+            "tags": "train"
+        },
+        {
+            "filename": "07e1af6421be083e6a6a316f844227b186166a48722427f283f2f4440fc1db1d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "97436",
+            "tags": "train"
+        },
+        {
+            "filename": "628accd0594f41e639d2dc6754df54dce1892ea79f74a60001bf6688b13f01bd",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "148362",
+            "tags": "train"
+        },
+        {
+            "filename": "0171defd80f58eb7b29f4e66e884cc8598bfed4734d4778c0b8220c989edaede",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "69088",
+            "tags": "train"
+        },
+        {
+            "filename": "05a459c821e89955f6dffea01cdfdb1dbf03280090cb2149e0a576b935489e48",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "368436",
+            "tags": "train"
+        },
+        {
+            "filename": "6aa89e47f79b140cffda9ccc0e4f1ca45520a18fe8fd14303f1c9a28293ef858",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "9756",
+            "tags": "train"
+        },
+        {
+            "filename": "02b564396fe0611ec3fd35956a52688fbe45e6ad3f0b3f299ffec7782bd040cb",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "139624",
+            "tags": "train"
+        },
+        {
+            "filename": "0279c6576dbbbc8a2f2246970b474f2f872b6d223180da9c5ec7fd57cf587358",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "118792",
+            "tags": "train"
+        },
+        {
+            "filename": "006d0ab079f5dd88da135b3fc79863667dc1ea078797a62fb2d402d3e7e16b19",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "23597",
+            "tags": "train"
+        },
+        {
+            "filename": "00b731620d3df4e057593a3c27b49634dafe5b786cbf4cc277f885c4c847bf57",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "181294",
+            "tags": "train"
+        },
+        {
+            "filename": "08313a52812d45f6978b0bc6fc6e4256f92f54a98027e7a942da3ba6523d551c",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "14152",
+            "tags": "train"
+        },
+        {
+            "filename": "01fc21c43f355ab56194993f1ef7873379c0eb10018a0d17edac6aacad1f16ad",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "138499",
+            "tags": "train"
+        },
+        {
+            "filename": "629e1442b6ee0bc3891eebdfbb5a85e731dd2b9467bc0fa79b3d17d3fa89f54a",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "84796",
+            "tags": "train"
+        },
+        {
+            "filename": "08b38ef39cdd05493256b1e6585e0b24feb0bd58bfe2408ab115b5984deee11d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "11524",
+            "tags": "train"
+        },
+        {
+            "filename": "44ea356201a1c1f0e8b69f19fb84bab003b8ce0e948a7d8eab0de7322a481909",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "47828",
+            "tags": "train"
+        },
+        {
+            "filename": "01433b70a6ac1b531f6fb853341b29e80f7b743466fcf2066ba98df0fb36e825",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "138403",
+            "tags": "train"
+        },
+        {
+            "filename": "05b609da316ad5ff373208951b1474dc36d39e165072950149c6dd09d9e41e52",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "80349",
+            "tags": "train"
+        },
+        {
+            "filename": "00bf7274c82cfa78224945acf6ccd6c7e0b90fea0d1deb07379b58f34343cfa2",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "113275",
+            "tags": "train"
+        },
+        {
+            "filename": "67a515e31c11a48872af2c1ce37e256e89a833934ea349a8d85d6d0da17376a8",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "30276",
+            "tags": "train"
+        },
+        {
+            "filename": "39a82b6a8da716be59203c96da818c3edfc907f4d05ace7ab8bf05c983ca0fe7",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "79156",
+            "tags": "train"
+        },
+        {
+            "filename": "00f0e36cdd9fa04a16f04ba646ea9d84c9dc8aaacc1460957aef28fdb0f2f822",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "219852",
+            "tags": "train"
+        },
+        {
+            "filename": "029c8380061cff30559c23df8d408c1b283aac37e6c1bc9779c0c492faf71e96",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "92755",
+            "tags": "train"
+        },
+        {
+            "filename": "a9a78eefdce76f78d15d1ed61927bfc00211f240c0ec6282d141c72668b41699",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "881828",
+            "tags": "train"
+        },
+        {
+            "filename": "629a2eb523cdc871179e528b575016be9243d6fd25d5b125cc3f785d445aea32",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "130115",
+            "tags": "train"
+        },
+        {
+            "filename": "0c95e0a62a035c86ef534e31242ebf52ce1dfb3b420ca8bf8c7d7d0e94030581",
+            "label": "malware",
+            "family": "tsunami",
+            "CPU Architecture": "PowerPC",
+            "file size": "455611",
+            "tags": "train"
+        },
+        {
+            "filename": "0b3c059668675148a387596793f4a456123d2c3fe603b73d55bf487b577c72a1",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "126877",
+            "tags": "train"
+        },
+        {
+            "filename": "6ac581cfed84dc3fb6d7301b5072e9c8fe7be8c1fddac7819645fa3ab4529278",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "13852",
+            "tags": "train"
+        },
+        {
+            "filename": "1028415e220a2a8aa8765ac44dad471f885640042eb53a33bdda018503d859a2",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "183304",
+            "tags": "train"
+        },
+        {
+            "filename": "010af140e89e4ede3c6b35a13a4eb6adab16fa26632080faa8665a0d7c1af8fd",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "98800",
+            "tags": "train"
+        },
+        {
+            "filename": "0264b051b2678db4874bf414d7b4fbd53c6b96ea51506f03a493bb43873d7cfa",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "119972",
+            "tags": "train"
+        },
+        {
+            "filename": "624b6d8abd0c0df6ae3c78b23eeeccd929227f1598c7c5db83a993528d1041b1",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "141274",
+            "tags": "train"
+        },
+        {
+            "filename": "002f00919706e6eab29a57c1a218547b9cc4c93208eb66711a66066822c22786",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "78609",
+            "tags": "train"
+        },
+        {
+            "filename": "09a5f5a3126805e5cf263738aac18e6d0eebec769911c82ad2733281873ee34a",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "28140",
+            "tags": "train"
+        },
+        {
+            "filename": "1757267329f7556b7d3b177e4edc76cf8d4399bf9479451bbb6455ac7222ffaa",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "210466",
+            "tags": "train"
+        },
+        {
+            "filename": "02ea8221bc441e053167490c8d0de8d0771a848ab365b4b4a3c7f4d3accd7382",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "2257976",
+            "tags": "train"
+        },
+        {
+            "filename": "536a7bfb6f1790003b488628ab89075c8886f3efc510f3ac3a4138cd0219e7f8",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "1113387",
+            "tags": "train"
+        },
+        {
+            "filename": "870f1b382e67427391cfe8ce47da58555ee778c56d6efd86996d74565b2f92c9",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "152728",
+            "tags": "train"
+        },
+        {
+            "filename": "0546416038a07664b55749d3c2f0691bf5059c729c42a546d64f18142bb4e6e0",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "50764",
+            "tags": "train"
+        },
+        {
+            "filename": "01327ba35fb796ee386921cbe9073bcf32fe8f92d602b7a1a35fa5c928de980b",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "145189",
+            "tags": "train"
+        },
+        {
+            "filename": "118afbb4076377dd9dc73d974a63f200c1b1af6994aa06bb46021e776b87883e",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "85904",
+            "tags": "train"
+        },
+        {
+            "filename": "6273d1e1a3897e36ea095675232b1afed648333092bfd6c83184a3b769f3c4d7",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "130434",
+            "tags": "train"
+        },
+        {
+            "filename": "06b075b2b319502926c9231df7de28ec1522696e2187b0e6337e1d3e3c704dfd",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "1755920",
+            "tags": "train"
+        },
+        {
+            "filename": "0ee501c170f919e3b1c535731ed36fcacc727fb2e746e7fd69981c415abe53f1",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "116786",
+            "tags": "train"
+        },
+        {
+            "filename": "0593e610e29530fa2419509c3181ee8b40f0a42fd9737d5bac2ab4673c616fd2",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "113275",
+            "tags": "train"
+        },
+        {
+            "filename": "3a1dd167092a66ddd8ee73b41324d9e760c301a39c2af3747067fff585b366d3",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "1238772",
+            "tags": "train"
+        },
+        {
+            "filename": "22342984acac8290f231c6b17f31f0ee2a5be84d058e4a6913a1c8c6cca2b71b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "20704",
+            "tags": "train"
+        },
+        {
+            "filename": "49f133ff9a7b7c6b3033610977905ef7fc5277a0cf6a286c83cfbda26ef41ecf",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "954700",
+            "tags": "train"
+        },
+        {
+            "filename": "03f2f9e41f2ea0669a2ced5abd9073b5fdc5ea365448d068748c6dbccfd1b104",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "424872",
+            "tags": "train"
+        },
+        {
+            "filename": "0c815130bf9d67178830b0f7dc806e2743b3447d9e23536740747aead6c3d597",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "52072",
+            "tags": "train"
+        },
+        {
+            "filename": "0b98ca8fbb508ec2e1cc7c283c035b0d1a874965205ef53459967702f3dac80b",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "116786",
+            "tags": "train"
+        },
+        {
+            "filename": "028211df72b27a0b458816d85862f7462daede10fe629c8c7244babc491068e2",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "1541620",
+            "tags": "train"
+        },
+        {
+            "filename": "093c63d71afb2e5db6cae577b220de8b16fed4efef36468a0f3e56f9292cfb5f",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "59896",
+            "tags": "train"
+        },
+        {
+            "filename": "62e0e629af45acae23dbb925b43b8a51f29c06cb5da6042e2a5079787c2b00d8",
+            "label": "malware",
+            "family": "ddostf",
+            "CPU Architecture": "ARM",
+            "file size": "748716",
+            "tags": "train"
+        },
+        {
+            "filename": "00219f8a3ea1b9092dc154c165b537dc83a28ff9d04c725d8657a2509a093ea9",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "75876",
+            "tags": "train"
+        },
+        {
+            "filename": "01867d5cba8915c33813c90c328aa30a829486e0ab830ff31d9669d3f341918d",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "92994",
+            "tags": "train"
+        },
+        {
+            "filename": "0999ea4d8a763f276d767bb7a828f04b7e5aaa79bd6d097c460826cf4a89f3e2",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "298284",
+            "tags": "train"
+        },
+        {
+            "filename": "08c1a8a8b956d7eca9c806c89b3acecdc90d9c321019b742807d7fb4bcd2f621",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "145220",
+            "tags": "train"
+        },
+        {
+            "filename": "0f24ae22960a9729760a2efd38e79ba4010f3de30c740042dac8f7556df9012d",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "116786",
+            "tags": "train"
+        },
+        {
+            "filename": "0affd1e7dd45997751c7b4b6ab3d7fc55cf62eaf8bf3410767ef3a04d38e5f0b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "44896",
+            "tags": "train"
+        },
+        {
+            "filename": "0378edab81fc84fdc4e110831fb2dd34d3e3b3659623ec757fd75b100525c732",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "93899",
+            "tags": "train"
+        },
+        {
+            "filename": "62eba6cf64d8530554b48206a181718f38ba2aa0cd07e7c6b172a876f6ec4851",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "151002",
+            "tags": "train"
+        },
+        {
+            "filename": "6af0af140ad1bbe9bc6aaa9b37974ff6208fbf6b2b50ae2cb188eee2cb08a044",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "9532",
+            "tags": "train"
+        },
+        {
+            "filename": "00f9e93c2711b72f3547cc5301b7f1df4909f9bbf4cdb0f54fb87cf4e58c8782",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "240420",
+            "tags": "train"
+        },
+        {
+            "filename": "9689287413234f7458938c66ffaca181ddf02905f8f9d5f89c949d1c07d84277",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "91800",
+            "tags": "train"
+        },
+        {
+            "filename": "6263ddfd8cb556d44c135f5b7468a0f96b3dab461374167f39638da4e40d2967",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "142077",
+            "tags": "train"
+        },
+        {
+            "filename": "026e36386f76f67bef2c0d773706a7521c99062209a121d68c29da36dd61cf76",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "118114",
+            "tags": "train"
+        },
+        {
+            "filename": "358171619d1e623176757877876d20762f137e32c187237e31a05688afb91479",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "547540",
+            "tags": "train"
+        },
+        {
+            "filename": "046d3251bb0ed02261c43d86e0bfcb30c837021e8240687704df67decf172d1e",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "75224",
+            "tags": "train"
+        },
+        {
+            "filename": "009a715f1d4102b5b96a0924e34c468dd3737ab64ef9241487d1e4ff049425d9",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "112140",
+            "tags": "train"
+        },
+        {
+            "filename": "72916815659d74bf1953553b2ee675a63660381dce65bba5e6a70726608edb92",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "79800",
+            "tags": "train"
+        },
+        {
+            "filename": "12e5f5eb40f9d938ab57c871a89e113bae41171d0716cccfd3f2ef59e4e8709a",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "290156",
+            "tags": "train"
+        },
+        {
+            "filename": "064d5227aea3fa73d1b70330621cbe1727950c6742a12d788f0c87b5116a5403",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "108289",
+            "tags": "train"
+        },
+        {
+            "filename": "00aa46d82bb76e8cd1193e54f9dfc981e4a3bc9919d4bbdeb715871535e31a29",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "119167",
+            "tags": "train"
+        },
+        {
+            "filename": "21bf552b405b081851ff7a1da405093c2959dfd4183c47015beb959706d73084",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "20360",
+            "tags": "train"
+        },
+        {
+            "filename": "13023a3720cad0c12e10b2e1aae650f284324b90ef0118dba1870014a0269411",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "35343",
+            "tags": "train"
+        },
+        {
+            "filename": "15868e7006d6b5611754606a26c22555a03f0337389f82f862de07014ca7dc9e",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "15704",
+            "tags": "train"
+        },
+        {
+            "filename": "0060b19f0725e549500d0ef2e6797357e49affcf516c919b60f7d124c7272bd3",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "379518",
+            "tags": "train"
+        },
+        {
+            "filename": "002fe8fca1e433554b9d78a33e738b432140e9692f1bb5ef9edbe1d11239c732",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "136843",
+            "tags": "train"
+        },
+        {
+            "filename": "0777e313952536a01bc8cdddd79be7cd88cf79532ad1a18536c9d1cc60e0fb0a",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "85248",
+            "tags": "train"
+        },
+        {
+            "filename": "01654f6bb737bb41f83f3ce87534e5a0dade616dcab366290d147c4fc71844cc",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "126905",
+            "tags": "train"
+        },
+        {
+            "filename": "107dc4dc399cf5574aae6f38a0aa6c2777468a45d3f50cd679ddec5747f659c8",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "218111",
+            "tags": "train"
+        },
+        {
+            "filename": "03f9670398424e4aa38c17785a0e0ecdc05dc747d9c9ba6ef7bbbcb71dda6d4d",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "116814",
+            "tags": "train"
+        },
+        {
+            "filename": "00dbde13ddcaa111c55274235fa2412815e079c2930330b939652c803e3799aa",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "124050",
+            "tags": "train"
+        },
+        {
+            "filename": "19150e498db8045f1a3a91b192dcaa7ab0ab509c0230f5594d63446b36b3c71d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "57744",
+            "tags": "train"
+        },
+        {
+            "filename": "622247497b4c7b133716599025ecf1e77f63e63c18e667de1a5c312f1ee753b6",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "125898",
+            "tags": "train"
+        },
+        {
+            "filename": "0387f757ffd64908ff8f53006facb4bfc4fb5d1b107d2dff6f7dcaa48542fa42",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "226872",
+            "tags": "train"
+        },
+        {
+            "filename": "062d4d82bec5a296323dc06a69c73d700c56409740c60f277e3a5b4afca9038e",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "142216",
+            "tags": "train"
+        },
+        {
+            "filename": "04d3f4d55874e670672f8b66360ca091fde6f19d130dda908b9826e4fe4ca2eb",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "164451",
+            "tags": "train"
+        },
+        {
+            "filename": "7f73a6bf7edcae5ed1d45f62f590e9e0dc5aa60cb38cd8babc51a48c3676fe93",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "87624",
+            "tags": "train"
+        },
+        {
+            "filename": "066e6727de1002e6fa03d884cb0a4fe8b47812de5bdfc4fcf4e749f201821852",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "320824",
+            "tags": "train"
+        },
+        {
+            "filename": "01350db06c5653d27da62f6025636ccde617fc8af4121c72377150cc7e21ec8b",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "179444",
+            "tags": "train"
+        },
+        {
+            "filename": "022002774c111d8997c54a00dee51c81ca351ea209cbd5599e4f98f4fc283c98",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "106529",
+            "tags": "train"
+        },
+        {
+            "filename": "022c43e9eca2b4d7b7d48a2e68a77b0ee5ae57acc95af5be3199ac9a7908b84a",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "88243",
+            "tags": "train"
+        },
+        {
+            "filename": "62ff2b468adec8328c03cea300edd66108b0fea3c167bbad1f70ba5c66411549",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "157785",
+            "tags": "train"
+        },
+        {
+            "filename": "00da84ca49acc0ee92144e81292b80d04a61ddd3bf79e6f5c5917843a85a9ba6",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "143083",
+            "tags": "train"
+        },
+        {
+            "filename": "0379b63f358cc4dd27fd5caf08061c1e2220869588b7c1d6457105b049a375e6",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "125003",
+            "tags": "train"
+        },
+        {
+            "filename": "089f4be5ef291a177dddb94a37e6d82bd1886deb652dbd39216c11f642c740ab",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "46596",
+            "tags": "train"
+        },
+        {
+            "filename": "005db043b6a500679122009531275a89b983cae2ca596c39631168a369437bc5",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "130133",
+            "tags": "train"
+        },
+        {
+            "filename": "6227e794c99b7bd48f762492ad2be15f222c768e9e78ad6bccbb32984379f83e",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "164437",
+            "tags": "train"
+        },
+        {
+            "filename": "01ee6230ef464288ed4ec814543547c226afe52b06b912e7de13e79bd63c0aca",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "116786",
+            "tags": "train"
+        },
+        {
+            "filename": "14c8a4a90698a3a2cb7f1af4c72c051ad4a589f7540dde751ef09ca9d3f64478",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "40844",
+            "tags": "train"
+        },
+        {
+            "filename": "62503534c7c1a7dcfff65b6ec1e92c9bac8c2a4582b28cbc58de17e322cbf568",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "143019",
+            "tags": "train"
+        },
+        {
+            "filename": "032ed9cc2cd85feab52b263091433db54e84c347b084b22ec29561c6a18fe9c8",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "180414",
+            "tags": "train"
+        },
+        {
+            "filename": "12e570e12f12d6b4a7b6737748b01c5a7708489907f7b9d483e7cf7ed23040e5",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "99023",
+            "tags": "train"
+        },
+        {
+            "filename": "1dead09498f0da8e6e3d91b6c0c96ef522d38968d793aa9038c10af7cc2b67de",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "125092",
+            "tags": "train"
+        },
+        {
+            "filename": "050e91078caaacaeecde63f2d382fbfb56b451d553ad1e19548a4210b2ffc578",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "611180",
+            "tags": "train"
+        },
+        {
+            "filename": "0151ba451023d1ca5eb29c61b687e41c1c616e3149c97469ca51d03152f4eb56",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "51660",
+            "tags": "train"
+        },
+        {
+            "filename": "147a75d78b13812b863e583f75278712bf80c5b82814ff42879294850a370cb1",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "30928",
+            "tags": "train"
+        },
+        {
+            "filename": "09fdef72abffb8d661d0803a51e6a843df97e2f4a83016c4f53aae370dcdc0cc",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "7176",
+            "tags": "train"
+        },
+        {
+            "filename": "05fcb65cf5f7ca290333162296291c624052acc709320265f6402490bcd79701",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "1570052",
+            "tags": "train"
+        },
+        {
+            "filename": "20fc2fc85139766f66c6471b50e3943c5e23c1471734944bfd143dd63ff30a5b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "11150",
+            "tags": "train"
+        },
+        {
+            "filename": "0822950b04c1bccb4284a56c06ab3454c018e5a02e88065cb3f96f73306c90cd",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "386188",
+            "tags": "train"
+        },
+        {
+            "filename": "07b846f1288c2d573a03607aca3bf5c83875e640e278c5d86bc4c87db38fefb7",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "179653",
+            "tags": "train"
+        },
+        {
+            "filename": "6a527c8fa56a42f076ffa3786e26c7bc84976fbbbabd4dba6e5e436e9d9dd4cb",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "22908",
+            "tags": "train"
+        },
+        {
+            "filename": "0139e0e572313dac925b3c05affb723a21d7be9e29e8c25bf14918ce6e62f959",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "219508",
+            "tags": "train"
+        },
+        {
+            "filename": "0342936e964178fa6b56a5e440a64ef9abf2453498609102c11c436ea032b522",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "155428",
+            "tags": "train"
+        },
+        {
+            "filename": "00d57f143abaa6fc91a01b2a9a1bab9e39f5518cbfa9eef6790c428d05bf450a",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "109454",
+            "tags": "train"
+        },
+        {
+            "filename": "04af2f280167a8ba3629f7fda8a33cc50b9d355ae5e214c79bd17c935fd14ce2",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "108974",
+            "tags": "train"
+        },
+        {
+            "filename": "02b97e31460d817f830c7e1ded60c9a7cda0074c303e714b5df76ae41db6494d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "74008",
+            "tags": "train"
+        },
+        {
+            "filename": "0018d25e9cc5e6a3e85463e125747291e1fbcce2db62ed561132d3a406026e8b",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "159621",
+            "tags": "train"
+        },
+        {
+            "filename": "02f99bebb35f1241e8687a648668b2d5d387ffdbbb9db2484f5e695e1621bf6c",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "26292",
+            "tags": "train"
+        },
+        {
+            "filename": "046ec2a65336bbac0a7b9b167d7aef400586419a9a14eaf03826f7dfedfc8eb2",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "131840",
+            "tags": "train"
+        },
+        {
+            "filename": "02dba3d0816a700e3f2d4359e1a94c047b84f31db7b33ebe27d5c170395389a3",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "80124",
+            "tags": "train"
+        },
+        {
+            "filename": "4184c916e654e20972e5fc427275ec33c0ab58c3e09d5ac2a0ccb469ddc917ad",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "43172",
+            "tags": "train"
+        },
+        {
+            "filename": "1aacd45410cd349ac28c81e571aea7b185fc4feee80563b92454eef40058a0c9",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "555200",
+            "tags": "train"
+        },
+        {
+            "filename": "000860ebf2b1abffc7eed375ac47e322c2d44e1b67c500d0370aeb5bba37d755",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "174282",
+            "tags": "train"
+        },
+        {
+            "filename": "001b547056d657f24ddd149d9d0cdf1fe926f66459d39193db3a19720820e32a",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "128047",
+            "tags": "train"
+        },
+        {
+            "filename": "2858d20dc9b73ec0610772c7c46f82da1cf83f66209db445208a0eff608d9d3d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "901084",
+            "tags": "train"
+        },
+        {
+            "filename": "047120aace821cd19f59fd9ecbab8aaa686c417aafd5b8c40cea899afd49e27a",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "174889",
+            "tags": "train"
+        },
+        {
+            "filename": "3bf8462610a1d90f3fdc6d6e99d07912ea79170745792b122441e3ea012fc181",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "84196",
+            "tags": "train"
+        },
+        {
+            "filename": "62109061651894ca006ca9c33323c935b718b613719036bbb2cdeb27c75f678d",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "134867",
+            "tags": "train"
+        },
+        {
+            "filename": "805e074ad259a3a1941f8f39ee360eb955781159ffb5b80015eb3ff648fef180",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "17684",
+            "tags": "train"
+        },
+        {
+            "filename": "25cb33dc20bfa79ccd2efe5696b52c15aecb7ad0142090dfed97b1fefd39c01f",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "91800",
+            "tags": "train"
+        },
+        {
+            "filename": "06a365d9d8ec5fd4d652ba28fb47bf7ac0dc8ef2c64ea1806dfa467a7de5fbf9",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "98726",
+            "tags": "train"
+        },
+        {
+            "filename": "0533e4bd39a7d9f524d27c466798aa46a4b485cbe63e16b669dea26eb29ad7c0",
+            "label": "malware",
+            "family": "tsunami",
+            "CPU Architecture": "PowerPC",
+            "file size": "175771",
+            "tags": "train"
+        },
+        {
+            "filename": "131e0977c83d0ce2ea563437b043247498a3ef81605922c2f4e68296c5c92dd3",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "83049",
+            "tags": "train"
+        },
+        {
+            "filename": "2bdf497a0d5808b26a65b48e917a9929322147911d6db3091533833929731583",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "14220",
+            "tags": "train"
+        },
+        {
+            "filename": "01260547e8663275f8fde2159605d3bc60caf66c3c797157abd7f3f3d7623a14",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "78746",
+            "tags": "train"
+        },
+        {
+            "filename": "04cba222e1fdf84cfc32e2b48f778f76c71102522870f7f2eefe381fab15ff09",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "240420",
+            "tags": "train"
+        },
+        {
+            "filename": "0898694a12457b21363778b403f7ebb8dc905263cf7fd491701e1d46fd0a136a",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "8028",
+            "tags": "train"
+        },
+        {
+            "filename": "0007cc77a60ba4e18e4f640c5a4385f010eca32729cb1f6ad23b4d91dcc0646f",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "159493",
+            "tags": "train"
+        },
+        {
+            "filename": "0be336dafcd0697ea23c74928195f003d52533fc4efabbeded166e539af796e4",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "225492",
+            "tags": "train"
+        },
+        {
+            "filename": "340a557c2dca37a348d65e54b1ee5df143f2f10548debdf121446c4425f40b8a",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "564188",
+            "tags": "train"
+        },
+        {
+            "filename": "0023d9c09988e6ab8d814b26b1101244b29d327467e75d057933e2fc2d7d5086",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "122464",
+            "tags": "train"
+        },
+        {
+            "filename": "4ce922ec4b7db297c3514d0489e651e57a9018ab51c27652e7cfe7dae2998677",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "14064",
+            "tags": "train"
+        },
+        {
+            "filename": "07f507d3718b4906e577def32fd1ac68b5410f62cbd88e4834cf09ae948fa4aa",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "38708",
+            "tags": "train"
+        },
+        {
+            "filename": "0439ad1423858aa9182dbb79515410f40f4737673377ce66bca16715090ee85c",
+            "label": "malware",
+            "family": "tsunami",
+            "CPU Architecture": "PowerPC",
+            "file size": "141664",
+            "tags": "train"
+        },
+        {
+            "filename": "625dcbbd1aceab0de5e66a1afc021ea537c1c582cf0bd78b30e4ba8377c6512e",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "117027",
+            "tags": "train"
+        },
+        {
+            "filename": "01554834bd01b504bf91778752c61ddf8e2e27f1b771e4152213849bf3a04826",
+            "label": "malware",
+            "family": "tsunami",
+            "CPU Architecture": "ARM",
+            "file size": "199169",
+            "tags": "train"
+        },
+        {
+            "filename": "0996883a6d075773f9ef280be19a159366d24bc9c589f8d649e3c4f25212133d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "19000",
+            "tags": "train"
+        },
+        {
+            "filename": "00177bb92c38870b964b2a46406f50bcaccce473b90edf652e8de56d03c76a75",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "79810",
+            "tags": "train"
+        },
+        {
+            "filename": "90ce656b4b75b017275967f52b9a0e98dffbfe0a8727d41066294606ea4b2301",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "75692",
+            "tags": "train"
+        },
+        {
+            "filename": "174348ec76101c2ba02f8ee066fb39e1ed13ccb348069a6330fe4c3a9b6718da",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "14324",
+            "tags": "train"
+        },
+        {
+            "filename": "0e0c4c4d3a892cdab41b2f94106fe99a7d378e2ffe20861954b2928abb23c6cc",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "97308",
+            "tags": "train"
+        },
+        {
+            "filename": "085771b6adaeffbae300f60bc1d2ee70a08a9ffec1231d5c235a15a260d493b1",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "187406",
+            "tags": "train"
+        },
+        {
+            "filename": "d9e902121e711a3557e116a8894a8a42152e3741a58c9374b10637bc2385fb06",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "1242876",
+            "tags": "train"
+        },
+        {
+            "filename": "00758fc8e99742ccccf5cdafd8e31b16c594a3a7651fbdda35f40cead1406f7c",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "123092",
+            "tags": "train"
+        },
+        {
+            "filename": "016051c3162e2d6c621464ed572fd84db619b2e30946892de7adcf3881d712f0",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "140662",
+            "tags": "train"
+        },
+        {
+            "filename": "6215d01d733b2df6e530ff26855551c703362d403eb38d077e285784c3c40f32",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "126779",
+            "tags": "train"
+        },
+        {
+            "filename": "03d15cd5af591c5c7d9ae377808585250a65c0867ab79f6e601631f5deda24bd",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "115387",
+            "tags": "train"
+        },
+        {
+            "filename": "031321fc5e0fcff40d084511e59c447e352a466cabbbf3da1237e04ea5b0ff3e",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "42920",
+            "tags": "train"
+        },
+        {
+            "filename": "059c02c517ab6766df03401e0200e4bc22fc0fa8f370830ca7d98a5811e34634",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "10040",
+            "tags": "train"
+        },
+        {
+            "filename": "07f8173e60ede0a880f9d69a97920ff37b834af94a61ee7721d46557b0094ba1",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "112561",
+            "tags": "train"
+        },
+        {
+            "filename": "061dd6581c02d0b4250703049131aeb515d06a50d76fe39ff0e144ad41fc5641",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "10924",
+            "tags": "train"
+        },
+        {
+            "filename": "d0188b8596ed10155fb58d91abaa24ac373c2685062797a98c9fa7d2bae6f77e",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "1242864",
+            "tags": "train"
+        },
+        {
+            "filename": "22095a0f2172e2659a3a40a8225cf80b4ae287432d7917da767c87b04ac6c504",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "1274096",
+            "tags": "train"
+        },
+        {
+            "filename": "02c1de074f7ea9e4ef8891d69eae6018b38a586b2b4068552c3df20b9e8edffc",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "307751",
+            "tags": "train"
+        },
+        {
+            "filename": "103abbeb598d1a2224e8513c700594155b78fb0dba4eeb5c5359eff3f09e6c09",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "22196",
+            "tags": "train"
+        },
+        {
+            "filename": "0fe89e7f7709202bd881f32d6214ec43361c917244160253111ab6532527f0f3",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "84796",
+            "tags": "train"
+        },
+        {
+            "filename": "00df06b7d58943a04af6f38cb48ca77587b2055f2838e99ca048d67575d6c037",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "102071",
+            "tags": "train"
+        },
+        {
+            "filename": "118c0aaf5554b262a0064a8ddfa69c1f3c12c57ccfbbf779d7028a933d75bd65",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "88784",
+            "tags": "train"
+        },
+        {
+            "filename": "0a1fed1a4df191e04d944d37f23d2d48f3e4322d48c9e5c2e3a5a66ee4f62893",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "497496",
+            "tags": "train"
+        },
+        {
+            "filename": "049241664bda035426d61ad52ab11330c0c4814fa910c295ebc5921185386ea1",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "1105832",
+            "tags": "train"
+        },
+        {
+            "filename": "0869c5df646654a163ce10458355934abce972ee28b691e6d4b97c8250cf2e15",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "317726",
+            "tags": "train"
+        },
+        {
+            "filename": "1a431559a5e2830663af10c6cc83920fe6c1aeb6694b7db2f8aa52a7f3601d25",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "13868",
+            "tags": "train"
+        },
+        {
+            "filename": "021a6bab2ae5943de1f90da5f99b94cfb2f1f4d442355f09aeb39c3697f5b6c4",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "137917",
+            "tags": "train"
+        },
+        {
+            "filename": "20a3c6840129f673008a04cbe1867df9969fbab7e14e05183f4a76e518fa3c1d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "1433808",
+            "tags": "train"
+        },
+        {
+            "filename": "6a8d07aee9b1047ac2f0dff3a0c42baacd643913f4d37b187ef8dd86223db6a7",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "101856",
+            "tags": "train"
+        },
+        {
+            "filename": "05161c1fb3f59df496814478756e2956d6a90dcbc1d55d70fca02dcce02ecb72",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "119165",
+            "tags": "train"
+        },
+        {
+            "filename": "63baadae777cefbdf22e0807b0f2427b6a54109a0d2618e47a667c1a01754295",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "36124",
+            "tags": "train"
+        },
+        {
+            "filename": "629bda91204888b88c0faf519e25681db8fb9ef772a35e108031e9daed27e110",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "106383",
+            "tags": "train"
+        },
+        {
+            "filename": "0432455bf4250b67344fb953074f9393558fdf05f025ba8cbe6f49ce48fe7165",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "123281",
+            "tags": "train"
+        },
+        {
+            "filename": "9ff9554444de56ba1c7aa351557427b1b82a3080a8deaa0837335b72af3456f8",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "100160",
+            "tags": "train"
+        },
+        {
+            "filename": "62b79ea2055958de3a99a99cefb543c6d9af1b5a58e5320b1a5ef4f43af48cf7",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "155247",
+            "tags": "train"
+        },
+        {
+            "filename": "00a5f0e5cb7879818c25422ce89cb6d014ec01c7c2b2515e9eda5cc422dbafc1",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "117034",
+            "tags": "train"
+        },
+        {
+            "filename": "021246fa1a4c57d8eececead10bf62d6bc940eea4901a08695172a1448232b1f",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "113279",
+            "tags": "train"
+        },
+        {
+            "filename": "2b16cc918bb5184f7fc7b9ff44d889e39c82134ec38eb33365edc2c48b47fd28",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "797476",
+            "tags": "train"
+        },
+        {
+            "filename": "04f03e24df93b79f939c19715a924b2bdefb38cdde2882bd23e4f48df9e72551",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "83520",
+            "tags": "train"
+        },
+        {
+            "filename": "0239d7904a91654335c14061796eccbe56bb7ffa00286b63a99fc476f3d3e42d",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "113579",
+            "tags": "train"
+        },
+        {
+            "filename": "08ef0bf456f2bb32a1320044a90b8480b76a1309c68e46f4a29f706a0388429b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "23140",
+            "tags": "train"
+        },
+        {
+            "filename": "057eb040ef990fe091cbc1d9c0d9c2fecb15fc60bc3f6f86d48ab7170972541d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "242680",
+            "tags": "train"
+        },
+        {
+            "filename": "08b4731569c086e2e671f92a142fc4e42658363b82e6d126e6efc1cbd1085744",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "25300",
+            "tags": "train"
+        },
+        {
+            "filename": "05af030dd7580316a92efa59f798896a051e73bbc5b6b17aa67a476c348d4443",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "242703",
+            "tags": "train"
+        },
+        {
+            "filename": "036f24e5f9f53631ccfec9d5ff85f3df55c83891ae8f82534b02f7784bc8f18f",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "113585",
+            "tags": "train"
+        },
+        {
+            "filename": "02515b8afb2f37b46175f623c600488c02adb9f12a420a1f497ee0cba433c9d7",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "122880",
+            "tags": "train"
+        },
+        {
+            "filename": "6ade7bf25bc07aab9b24fb8385e87250af31618e585972a2fbc9b9512122572c",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "14888",
+            "tags": "train"
+        },
+        {
+            "filename": "01c0b09b167d3557b320d8a06ae28cede754ad36d2d51f7cf66ac7178750ece4",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "42044",
+            "tags": "train"
+        },
+        {
+            "filename": "62da7f0c734db996215778c0d450de406f98835b24029505e3171e4578f237f0",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "240420",
+            "tags": "train"
+        },
+        {
+            "filename": "6ffe7ddca6d370054e1330fe3120b281a08c6b5c5f8c3dc767a352eb8ffcbcf1",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "563868",
+            "tags": "train"
+        },
+        {
+            "filename": "0be469b656ff0217b12662c7a76573b53e96488915598d21888932106db56dff",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "23140",
+            "tags": "train"
+        },
+        {
+            "filename": "020876bc8ed4bc1b7fa9918deb63c6a1fc05da15b72f423a4eba59311d56ad8d",
+            "label": "malware",
+            "family": "tsunami",
+            "CPU Architecture": "MIPS",
+            "file size": "98002",
+            "tags": "train"
+        },
+        {
+            "filename": "0708f2befa361b68f03f313781c34f3fd7d3ed8a35817cad5eb8967ce0323341",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "88584",
+            "tags": "train"
+        },
+        {
+            "filename": "0200307402158bda48154a74827a3092b8d8301dc29b67600fe1c425b01f767c",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "164079",
+            "tags": "train"
+        },
+        {
+            "filename": "ce530e186fd8ee215537ade0abce9f817d2357fea7f94294ab59a006caa77864",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "10352",
+            "tags": "train"
+        },
+        {
+            "filename": "01057bd779925c318fdb37c02a9761aab066bb19645f3f829703b5d292f9bbbc",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "140037",
+            "tags": "train"
+        },
+        {
+            "filename": "09c9e771d0134e92bb4631462fb7d695875379c9b7ecf0ad1228abdd43838811",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "80349",
+            "tags": "train"
+        },
+        {
+            "filename": "00980ee10650b34ac709409129c7baf78a32ff251732ab5e90dcdcd5c2c5977a",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "227518",
+            "tags": "train"
+        },
+        {
+            "filename": "0274d2482a543a6fe15bfe4912a8fa7ea40a11de07bffacf740bab24b8aed783",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "204660",
+            "tags": "train"
+        },
+        {
+            "filename": "01545c8ac8c6e348faeacf333e76d49c16089f931d91a02e9c177d5c02da2225",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "104214",
+            "tags": "train"
+        },
+        {
+            "filename": "034d5a308600ce0fc89fa68964dc6cdfc42fe9626cb8bae631f867320ea249c3",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "137917",
+            "tags": "train"
+        },
+        {
+            "filename": "08db5e41183a45ad8ff3331d5431f0c10eff79b3fe7bf84111f8ad55c191da84",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "270000",
+            "tags": "train"
+        },
+        {
+            "filename": "1cf827022763105ce1ef2d716cf9948467b3300073b0c9c9282982e5e7754ad3",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "89120",
+            "tags": "train"
+        },
+        {
+            "filename": "125761d3c8cea85bb6e9f145c02232ee58d4191d98cf02df7284e7c937c4251b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "388152",
+            "tags": "train"
+        },
+        {
+            "filename": "010d75281d4017e20cb3c86b6cbc342e79e02381d1c8fcf4dfeb65c7a81a3e21",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "106529",
+            "tags": "train"
+        },
+        {
+            "filename": "0c6d2037427e66b23b19cc974cb056aa0aa6bfd92293492ad41fd2a3cead3b9e",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "84796",
+            "tags": "train"
+        },
+        {
+            "filename": "12c707d929fa0dab1c139313f6c27ce327c93a6f9791d7ea0ee219d6fd06b0ee",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "52627",
+            "tags": "train"
+        },
+        {
+            "filename": "12e0b13cbcd317bbc582acd9d589c4685236dc8c17f997e729562658390b6a72",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "13188",
+            "tags": "train"
+        },
+        {
+            "filename": "0a30e7338ce43edb3f004f4dbeb701703834e1333728db000b08bd85acfe6148",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "144912",
+            "tags": "train"
+        },
+        {
+            "filename": "09e4340075a9465d063999c2819e6923681848ccaffd4dedd9c727477fb1db1b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "61396",
+            "tags": "train"
+        },
+        {
+            "filename": "43b3131aeadff77d484cad81c727d43b90051916a496044fcaa2b091a7c1112e",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "8268",
+            "tags": "train"
+        },
+        {
+            "filename": "3735b15b8ca93ae929aa6a59ca2a83c8d6f69c3a209a6cd0fbe10fbfcfead3a1",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "543448",
+            "tags": "train"
+        },
+        {
+            "filename": "0ae8299126adcb0ee206c402ed27d65383f147be54289907dfdc126ed9e57fdf",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "19408",
+            "tags": "train"
+        },
+        {
+            "filename": "c64dfd439edb4f33ef7ccb4b7133d93c05610e29ead05b9603f48bef82ed75fa",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "34544",
+            "tags": "train"
+        },
+        {
+            "filename": "0352770f0c43eb88923d2df0a73149ebb802220ea5c0c8ce0778f7c749f841b3",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "181853",
+            "tags": "train"
+        },
+        {
+            "filename": "128811f85993e5e5f7f51a53eb493bbb0f4c4689473752285636940c3831f101",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "22967",
+            "tags": "train"
+        },
+        {
+            "filename": "07e0d501350327ed4ab44db44ae478798e21cbae91f2f9c7998c6f14935e276d",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "88787",
+            "tags": "train"
+        },
+        {
+            "filename": "c6edb89e0d0cfca4a1b981b4b079fbcf4cb3638b3785a6516ed22e7a39d5954b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "281584",
+            "tags": "train"
+        },
+        {
+            "filename": "0562366b16010617ebdbd49e5b551381f8fff4fc277b09ddd2f42614ce73c7ee",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "129720",
+            "tags": "train"
+        },
+        {
+            "filename": "081d07785efef48f646c8e248995695640e78df12bd599fd3565aecab9e4ac17",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "115360",
+            "tags": "train"
+        },
+        {
+            "filename": "010d7273c9b43d1a89774045decd548af377d2146f0450c2389f5cf348cfd364",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "119167",
+            "tags": "train"
+        },
+        {
+            "filename": "09b8c40199625ee4e2c1d16a06cad3fa1ecb2269f3bfe752c0886038d0901927",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "556512",
+            "tags": "train"
+        },
+        {
+            "filename": "02c8b6c8cb83513d2ba2dedb91a9203486a5f27c3ada8945b561f1315160d071",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "120924",
+            "tags": "train"
+        },
+        {
+            "filename": "11d53457fc7275e3e6244d02d6f4aad3dd3819d3b9a7b351374526a8a6883f0c",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "90147",
+            "tags": "train"
+        },
+        {
+            "filename": "0e0381eb91bf9b38c99de207f1832d65537bbbfe77f936b8ea36d96a63fbb526",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "88787",
+            "tags": "train"
+        },
+        {
+            "filename": "78fa88d481011fd5b331b4f8f6176eaf4ae045ef1450c63fa43d57eb9506d7d9",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "535400",
+            "tags": "train"
+        },
+        {
+            "filename": "6242a090ba28e9e8b16f2ee13d10ca4642276afd26fb218d87fceaf7fb5f45ed",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "135349",
+            "tags": "train"
+        },
+        {
+            "filename": "72edf306015aba04d4ef789d7f03d9e456196cbdadf162dcf6d04f538bf17e83",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "43172",
+            "tags": "train"
+        },
+        {
+            "filename": "00af29ac76df39cc9a8787a0a530fef0d208a6499b0ac9d6bfe6b8e7a296e2f4",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "88784",
+            "tags": "train"
+        },
+        {
+            "filename": "01805e24fb039453a864f9a6c759b797d7bc0f3919d0a86514cd0421bb9f75e9",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "109308",
+            "tags": "train"
+        },
+        {
+            "filename": "004af53581c2b13167b515b7847168efbd8d5cecc637177a1ece16908a0941fc",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "129899",
+            "tags": "train"
+        },
+        {
+            "filename": "c833035298436d107220931a179ac90b305f84d97f2e826cb629bbb5e864b900",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "494360",
+            "tags": "train"
+        },
+        {
+            "filename": "624c3e536137a5d2b332284bb166e4bbfa5ef20c6711e60a0c895659ae760290",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "185172",
+            "tags": "train"
+        },
+        {
+            "filename": "01156608e93cb402cc1f304e373500f7967763b4ce5fd60b94ea5f80d8c7691c",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "127712",
+            "tags": "train"
+        },
+        {
+            "filename": "1e98e63c5ad8b4f9c380e816499085f57d0af74e30bb964ce6a1670a8f720f09",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "658484",
+            "tags": "train"
+        },
+        {
+            "filename": "0b9cde7f405d7c073437ed0e0cbcf79a65a87734453f7c98c96369fdd6f547ef",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "112545",
+            "tags": "train"
+        },
+        {
+            "filename": "070ac219e362792507cbd34cbcc8b55f5885fc843e8c142939170ad6f266591d",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "112545",
+            "tags": "train"
+        },
+        {
+            "filename": "05fe103dcb27d5675713176b78c70ecdb7a44a57de3f4c60e3ec315962baa3db",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "7176",
+            "tags": "train"
+        },
+        {
+            "filename": "04ba7527bde21ef2cf5555d27b1a849e34161dd8c4cbda5f48b0f586c96fba4a",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "80349",
+            "tags": "train"
+        },
+        {
+            "filename": "1323f896e683cea9b083c7d9db8b100f04958a4dc99ef038c220def5f1057ca6",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "124807",
+            "tags": "train"
+        },
+        {
+            "filename": "0301bcef299a63dc5b6e39318d5d840d21fcf5c715de59bc1222a771242d83e2",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "77269",
+            "tags": "train"
+        },
+        {
+            "filename": "5f92ac7fdcef752670e0d1edea8c55a84830390b5c161f69c6f89dfd2e12230d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "194200",
+            "tags": "train"
+        },
+        {
+            "filename": "a397d3171b13d6c0eedef4e4adc24ad9658e3c6bc201f191b87f27284f06591a",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "1255200",
+            "tags": "train"
+        },
+        {
+            "filename": "1ca4a0b7297cf499b2b4e8edb0d33dcf0536cec64b3ecd6ec185961cabce2c6b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "36888",
+            "tags": "train"
+        },
+        {
+            "filename": "6abcf16ca4cb834c386b0ff99e51615a54fe0410d5be810516b51283bc8101d8",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "9140",
+            "tags": "train"
+        },
+        {
+            "filename": "0a1a797ae3625d0d612b6677faea5533cbe19270c9c94ddf9d187df023193ab6",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "7215236",
+            "tags": "train"
+        },
+        {
+            "filename": "1109da1956cda1e75d0537c710535009498ee06c0f6d442f3cc503ba09cef084",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "151051",
+            "tags": "train"
+        },
+        {
+            "filename": "6222848de4a1454538399ca2acc5f1f58da7fc51bfc5a7c45d3e9132f1bc8b6b",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "130067",
+            "tags": "train"
+        },
+        {
+            "filename": "00ce79b2173d578e27f4407b7dc5dd768404d60f4bd094651c650e52e44e56f5",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "173181",
+            "tags": "train"
+        },
+        {
+            "filename": "0bb3f5781975c23fef5d211b60c4b9263a67580dfd73e880396329e00036ab90",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "70624",
+            "tags": "train"
+        },
+        {
+            "filename": "06281ea8b73df87f9ede7cf91a6e1eb90bc7e558be6a5db238fd65d08af0135a",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "244400",
+            "tags": "train"
+        },
+        {
+            "filename": "62b1e2fdc9e14974f358b513144e3bbf374639691eaa691128fc3e2084534765",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "135443",
+            "tags": "train"
+        },
+        {
+            "filename": "1d0d3043a17bdb1ecacb706cc036dd75cb52e8b0a5f72109f8bcd8c865ffec59",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "7504",
+            "tags": "train"
+        },
+        {
+            "filename": "1bfed6ff586685e7fb0d40e6b86583a9bf721c2aa63c6a35f17e03b93e6eb593",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "111838",
+            "tags": "train"
+        },
+        {
+            "filename": "05424741772f440338d5967669db7022e2a498f4559f2b673a657e0bff70c286",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "194900",
+            "tags": "train"
+        },
+        {
+            "filename": "019a7aea57fd73967994d74f5bb170534e41beed85ee0f9d86a40f747cae9e7b",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "198679",
+            "tags": "train"
+        },
+        {
+            "filename": "35d73002484550a277e6b6ce6e1dcf5a796a6f76403d1a4b0f38fbf00a75a8b0",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "881160",
+            "tags": "train"
+        },
+        {
+            "filename": "624496e504206d39fde970ab0ce83bc3ca98cbf403e6e5752e0e40242ef41d7a",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "118763",
+            "tags": "train"
+        },
+        {
+            "filename": "6ad4ffe0fd2da888283fe6cb2653e7b903fc405bb949edc45adba8dc4a791fb5",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "123960",
+            "tags": "train"
+        },
+        {
+            "filename": "05df11d800a443fb45e61ede77f03b35781f409fb5a4072ba689d20c0e69fe8d",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "84972",
+            "tags": "train"
+        },
+        {
+            "filename": "01282d134df5e0a859b1576d344d4bb29643c89cfae3e98120e1fc8828509bbf",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "10412",
+            "tags": "train"
+        },
+        {
+            "filename": "00b8e4a5f534e364405f270ebef8e5930c38026089fbae79bfc6bd1336fc3274",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "153082",
+            "tags": "train"
+        },
+        {
+            "filename": "0d6d09445d32bd6c50856949113d19a75f7bcc2c67950002ae5a792a60b2e68a",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "84692",
+            "tags": "train"
+        },
+        {
+            "filename": "01ac13c7e5e28bae978df974142ca7a9a3d51616c01a75f192781a258445c8bf",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "221676",
+            "tags": "train"
+        },
+        {
+            "filename": "01e2ec2257dc206f85990d6355deef31068d57516583b7f79c30aeddbbd076b4",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "123956",
+            "tags": "train"
+        },
+        {
+            "filename": "11a471a25343f5dd7b40c32379632e9ccec8426f3e003bbb49e0886f3b2b9077",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "98046",
+            "tags": "train"
+        },
+        {
+            "filename": "009868a2647c528c64437c80156af3f90d6e296978b6c5bd38740aae3a36a555",
+            "label": "malware",
+            "family": "ddostf",
+            "CPU Architecture": "ARM",
+            "file size": "748716",
+            "tags": "train"
+        },
+        {
+            "filename": "021a5762d2850501e2ab53f6a28df80af560ff45dc32ade55dc1631f9edf2c34",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "75556",
+            "tags": "train"
+        },
+        {
+            "filename": "0410779d24421093998d1864ee463a14f90fbe2027a3e1e334c1a192a6b10870",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "155429",
+            "tags": "train"
+        },
+        {
+            "filename": "01c5c57d55f471624b7f83064e4ac33549f86bf3f3777c76b473d7fdb5a1b5c3",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "138499",
+            "tags": "train"
+        },
+        {
+            "filename": "00e62d020b972e47336b2b4134dc9b671ccb54125713c0139c1a9f4baf59bdac",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "13688",
+            "tags": "train"
+        },
+        {
+            "filename": "320db194527e6eef95e70180c761b985a5b354bf02d12979ce35dbd07ba683e7",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "129432",
+            "tags": "train"
+        },
+        {
+            "filename": "058bc2f50c4fec3f5dcaa6affe25d22b363deea103bc8a9696aff09a5a3d0de1",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "60153",
+            "tags": "train"
+        },
+        {
+            "filename": "040058d11d3e8f2299c71b1a6ce4992db8e6d5bdcf590dbdf0dbd65601811d9b",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "123181",
+            "tags": "train"
+        },
+        {
+            "filename": "073d1788b61c31e0fd55e23bd6ae57cb072384b19515fc0407ae446d84dd04e1",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "134829",
+            "tags": "train"
+        },
+        {
+            "filename": "05524d72f3b95f8295626339e782f1be7a407dea28d95f6cc66b417eed7fdd8b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "15820",
+            "tags": "train"
+        },
+        {
+            "filename": "17685b7fa643745c8b8b4d639bfca352b0afc5c1b1dec972fc042bfdd0be8f80",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "1121363",
+            "tags": "train"
+        },
+        {
+            "filename": "62d8b8582ae6c2581487ff4631e8ae935c054fb91f2b42fe3b76fb73ed4dd1f9",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "104827",
+            "tags": "train"
+        },
+        {
+            "filename": "1e806cd80720268d5615441501a1d7edacd97fe7f56726235af7b26d054d716a",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "186851",
+            "tags": "train"
+        },
+        {
+            "filename": "643ea598c5185225c8a4e3cd4c8edc787e734e7cd6deae276aa3cbc9333d5b55",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "31972",
+            "tags": "train"
+        },
+        {
+            "filename": "02cfbb097ecf2cd578d83693e410678a1ff8a3de7ad7ce7e7f74d930d67eb6dc",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "30972",
+            "tags": "train"
+        },
+        {
+            "filename": "01003264a7495781d618ccd04b221483c6295cd6d1f375b1bed07d419f3aac35",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "91185",
+            "tags": "train"
+        },
+        {
+            "filename": "016b2b2a7ce525fc92c954341bb426e22a418dbe1f59e941e2e0bca43245e707",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "159493",
+            "tags": "train"
+        },
+        {
+            "filename": "0a15af59fcccec1ff0394d93b3cd9d709897ae4d84c4f10cc83cb6d5caa53268",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "84745",
+            "tags": "train"
+        },
+        {
+            "filename": "059eb497701e46ded5c074b798dc78fc4932f85476a65fa255aa5d5d62173c1f",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "438657",
+            "tags": "train"
+        },
+        {
+            "filename": "d158aaf23dc098e4acdfa6d8d696fc5e83116fd1728ef6ef66cb279f1d893e8e",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "23568",
+            "tags": "train"
+        },
+        {
+            "filename": "0296a93b7efb5cd1331258595fcec9a51def8fb0c29c63a11cc65e1336d9da7d",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "103836",
+            "tags": "train"
+        },
+        {
+            "filename": "001c0560a7e0c1d5696f0aabdc1fb4ab084fdaf17bd38c2846d96d75f4793444",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "MIPS",
+            "file size": "155476",
+            "tags": "train"
+        },
+        {
+            "filename": "01dc8cc4e1b1f489b1dad83f1bbd9cdbf1c91f6e3793a729af4c4a4d2b3e722c",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "108417",
+            "tags": "train"
+        },
+        {
+            "filename": "18c419cd9dbd570d342c22330dc82979e9cfe84c2894400f1c1b580ac0cf431b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "476359",
+            "tags": "train"
+        },
+        {
+            "filename": "00819a87f6259cef184b880f8d1f8bbc830d9416f0426dc2f959c73af894f8f1",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "9768",
+            "tags": "train"
+        },
+        {
+            "filename": "08b4d01468fc157c8c086cd63800d64e405ba1591e51b2606bd5c7ccd46c721b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "31400",
+            "tags": "train"
+        },
+        {
+            "filename": "137de0077c876c8734417f2bb0070917f629ce1166d85dcccf6e4331b316e916",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "13072",
+            "tags": "train"
+        },
+        {
+            "filename": "68ae1722222dc4b6c566a6719382cda8741c4e55190bc90d5c214b332290e6d1",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "395047",
+            "tags": "train"
+        },
+        {
+            "filename": "0208ee12cbffd5bbdae3c22cd372a206ebc86ff946ec42d717dc076d185998a9",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "39800",
+            "tags": "train"
+        },
+        {
+            "filename": "1c429a5b9deab33485a5b147d5b710a819d22f4110311a0f2f30ae29fbb7f4a9",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "144371",
+            "tags": "train"
+        },
+        {
+            "filename": "bbe80fe7c67fbd6286ef98ca60bb95fab141071e9771f63eae4ac2a8205df0a1",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "781072",
+            "tags": "train"
+        },
+        {
+            "filename": "023f9046c46fec07479b2f6b73e400f41f062900405ca07b584f4145c62f583b",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "132408",
+            "tags": "train"
+        },
+        {
+            "filename": "11bc7974e4ad19c60b25d1312858eb70ab10bd7865cc9f003ee005d0fca87f4c",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "84796",
+            "tags": "train"
+        },
+        {
+            "filename": "001f5c4d32b0b1b802ce325ebc1883ac93bb01bfb71ee411b976e3f5db21ba0e",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "112291",
+            "tags": "train"
+        },
+        {
+            "filename": "04c124a73871c94c5a6601bed14fb22851456ff7e80d20f5721bdb772f5ed8cf",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "137914",
+            "tags": "train"
+        },
+        {
+            "filename": "008a6ed4316b67800dd8be3405b63a46069ee9ca8aa84ae94f90b40801d4c348",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "185476",
+            "tags": "train"
+        },
+        {
+            "filename": "0f57f49af86ea8c13b9e4ef5316d5cf23bc2a300b6d542c1e05605b58c6c2235",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "107724",
+            "tags": "train"
+        },
+        {
+            "filename": "037cd7c66e1094a4b11791c1e39ad9a7c83599d98704e4826c34983d3177c3c2",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "547536",
+            "tags": "train"
+        },
+        {
+            "filename": "0beb5b969f36145689ce46a3ccefeac31f4a36e0fcb68b30b562bded6bebd405",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "438564",
+            "tags": "train"
+        },
+        {
+            "filename": "209557aac669a523f4b4180b101ecdb33ddca0cdaf59136fe337eb5a66d71191",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "797472",
+            "tags": "train"
+        },
+        {
+            "filename": "08fe327e2cf69948e792b54d0b556a0fdd25caae076dc61b69f2301c121f702a",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "179176",
+            "tags": "train"
+        },
+        {
+            "filename": "0f00b9cbc21b343a0cf39e2da50c66d7df65bbdc9a9035fe2b30394e11257284",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "117027",
+            "tags": "train"
+        },
+        {
+            "filename": "15c023fa3fd7130c748d5e214ae325816f417728e14c435e8b814322bb7f9b2a",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "117696",
+            "tags": "train"
+        },
+        {
+            "filename": "625b2138f23ddc4f1af3a6b7a6484717b3fc8971f3e084f089a6c53dc44fd778",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "73231",
+            "tags": "train"
+        },
+        {
+            "filename": "00d7f15af806e29a79af718d04c9bd1161c862510c5b547d2a244536ae96a372",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "785176",
+            "tags": "train"
+        },
+        {
+            "filename": "0627e8b4ca94c9a803fcc1ec6e2fb2db1c7b317e4eb5c0c78e7320181bef06dd",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "137917",
+            "tags": "train"
+        },
+        {
+            "filename": "01a52cedb63214cbbaef7586fa59325abb3d76a4bb476cbd49aac2b8ebf15333",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "152704",
+            "tags": "train"
+        },
+        {
+            "filename": "02eddd3c423ac39c9db3755c1f5cbb9e980cccab61248b437d803977b67bd5e3",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "11940",
+            "tags": "train"
+        },
+        {
+            "filename": "10cc1eca7cad46de8d43fea989f59b913d6d40fb70c6e2f292aeb860a52e197c",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "77438",
+            "tags": "train"
+        },
+        {
+            "filename": "0aa40bff5b6f3939d04cb21b68bea1c493604ab72238097ac3a7b2496497af19",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "93907",
+            "tags": "train"
+        },
+        {
+            "filename": "00cf384e3c3d97ffffea27fa34ced52e09c8ddf12eb87bb0bd84f1cb7b14334f",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "163449",
+            "tags": "train"
+        },
+        {
+            "filename": "6b7fda3c7e223a493838c52f5bc2095c1720b178c828d70738e69b35b654b992",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "55948",
+            "tags": "train"
+        },
+        {
+            "filename": "6246a8e7ff8520d423e99c7d55e2b733398e18975a54f8d629a65ed107449fd7",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "119796",
+            "tags": "train"
+        },
+        {
+            "filename": "028b52a0bdd47a6337847f05035ea0cd530d9dbe6835cc457fe6e389ff80e7ea",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "468212",
+            "tags": "train"
+        },
+        {
+            "filename": "2d20f1a60552ac6339d5943c1b4136874761fe94ef8e6a23b5021863c84541b1",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "10304",
+            "tags": "train"
+        },
+        {
+            "filename": "bc5a2e22f6233cb779a617b6031268a53187a970d365c64b5c54d616fa905580",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "924532",
+            "tags": "train"
+        },
+        {
+            "filename": "084271e79f7ff4b296e4a2ee8ca29891d6619d6f7926f7c010388761457235dc",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "23140",
+            "tags": "train"
+        },
+        {
+            "filename": "020acfa605d58dbf0adaa8f52b8f0ab7106d2bf358c71f185bdd3847c864ac66",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "141079",
+            "tags": "train"
+        },
+        {
+            "filename": "09f79039b9403d9bc129f7ca921302c559c328d36d3a12c180b38449be4aaa54",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "14152",
+            "tags": "train"
+        },
+        {
+            "filename": "786dd8a13b7c20643ba3bf42718b722ab7571f608bc950f240b78af51ecc25e9",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "911108",
+            "tags": "train"
+        },
+        {
+            "filename": "04bd6e342b003c7bdc600ca99fd6d04f54bbfdbf21354540989a19b8bd2c0fd2",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "107358",
+            "tags": "test"
+        },
+        {
+            "filename": "043dbf7a40973cbbf86bd1aeb0a12f8a15dabaf9bfe82ea28b6e5700354a859d",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "151301",
+            "tags": "test"
+        },
+        {
+            "filename": "0136571fe804e4a0cdb9db1566964bb2fa515c993ed99414fd5a0b76ab19d423",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "147095",
+            "tags": "test"
+        },
+        {
+            "filename": "00463984a73a1a1b2a9694642ea27d9cfcbd0f57788a8701a61e82adfb68dc4a",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "54920",
+            "tags": "test"
+        },
+        {
+            "filename": "01350fdc697ac00dc2f1402f3f429cc74b0f23e01694c3af0695c0d795cf93ec",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "158095",
+            "tags": "test"
+        },
+        {
+            "filename": "b1c69de8c3d0a3a7cb7e7605c0e8c1460a6703e5b66fd4e9291cf5145196eeea",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "469620",
+            "tags": "test"
+        },
+        {
+            "filename": "621fc400aa29802cfff0f721887cecca6b7ea8b4d113a947f70310449166a966",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "113821",
+            "tags": "test"
+        },
+        {
+            "filename": "05519b232ec4f9b71483b3da1bc7508e7841da5f2a5864379895a1e994a1eaea",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "298952",
+            "tags": "test"
+        },
+        {
+            "filename": "07fd71866a5b1371d44d180768b09a9d247c14e02132755fe6223d7abe9f2dea",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "63736",
+            "tags": "test"
+        },
+        {
+            "filename": "0abbd1d6893e672454d8790bb17a40a3e8b394dc90fd06083abf355e447c284b",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "112996",
+            "tags": "test"
+        },
+        {
+            "filename": "135e6c4edcc90dc4ed6af450a9f6ed25ea951fdd8f3f179407152e5e4c3ed4c3",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "116786",
+            "tags": "test"
+        },
+        {
+            "filename": "04ed73d73e7c451cc79b0fbf6d5c5746ec0d2e16aa076d267363c04bfc5c40e3",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "113275",
+            "tags": "test"
+        },
+        {
+            "filename": "00e91d43c4f8325496812b9fdf2e2432f83944e1dec4a955102ee16108cab088",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "87808",
+            "tags": "test"
+        },
+        {
+            "filename": "0ce8b680620357d07216bb323e17f52e59cd56d18da5d727b6f97d06f645861b",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "87384",
+            "tags": "test"
+        },
+        {
+            "filename": "0572fbe8d6b7b347478b47bdccf411c54f31c4d3c448aa15a5d1242bec613a1e",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "10292",
+            "tags": "test"
+        },
+        {
+            "filename": "0b79b648064860bb096fecca7428e10d954dde2f9c649b2c43828b1100b0f976",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "99372",
+            "tags": "test"
+        },
+        {
+            "filename": "62acfe66423971c990706609bdcce4808b7fd3e96b1d9a199764eeb200eb13ae",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "122462",
+            "tags": "test"
+        },
+        {
+            "filename": "07310c2d241fe85f6be8ec15e4032cbc244cbca4bd452c9ab97eaf351729f4d7",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "206934",
+            "tags": "test"
+        },
+        {
+            "filename": "07d1bbbc0d46dc03a32b8facfbf3bf9faa5dafae19c250eaaaaf745a8ecb8cfc",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "166952",
+            "tags": "test"
+        },
+        {
+            "filename": "05b9037724cec39fe9ff11e1b4f1ecc32ee973f5d0b1d1b58743698c3503d7b3",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "349316",
+            "tags": "test"
+        },
+        {
+            "filename": "625e15188350341f94314c27713e895e6c4615dfb28a9ce791f56ce72783c424",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "168792",
+            "tags": "test"
+        },
+        {
+            "filename": "ccc9d1f1f76a66ba49f4785284b10695abd56ecc738c790d23d5558ca2872519",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "188791",
+            "tags": "test"
+        },
+        {
+            "filename": "09fd22eb5ec602642f0cde62a241874b764df2983615d38115e08cc858910d52",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "177792",
+            "tags": "test"
+        },
+        {
+            "filename": "8f3424afe2c42c70eefae35d594974f9f1c87ac99b891b5c31bc0949f62f8e8c",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "559812",
+            "tags": "test"
+        },
+        {
+            "filename": "025bd283d3a9613491b9a37cccc9c1cad5871b1e0c3bf7a1069b5e95c0d0abdf",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "31764",
+            "tags": "test"
+        },
+        {
+            "filename": "007e5a0be65e76caa48ef600886f5bcf384ac5e45a3e566bfd6f70584f576e74",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "142029",
+            "tags": "test"
+        },
+        {
+            "filename": "1d6d0508d4837db01bd49cd8e65dea9970c10a10b71a2aa7836dd89e4c1e4d75",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "690948",
+            "tags": "test"
+        },
+        {
+            "filename": "4f433769e552ac414fde6264528410fb3e32b11e128fba73a0b0f98d9fedeb41",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "35312",
+            "tags": "test"
+        },
+        {
+            "filename": "048f94035b18a7466e286072606a6618fb5e600bf74d596e10e3f5f0d629f3e0",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "PowerPC",
+            "file size": "306390",
+            "tags": "test"
+        },
+        {
+            "filename": "1ef1aec469857bb63b6f69723a1cf75b514f9b5563912b80d02736967dec3d39",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "37344",
+            "tags": "test"
+        },
+        {
+            "filename": "1467ee5b04866e2b72c92d21ea5df09575a0b77dcd2d9fa7aa7b12f422440dc7",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "14194",
+            "tags": "test"
+        },
+        {
+            "filename": "6217aad6229669e9f1e2589de4b3fb4dfdd87fc4eb8be2eaad5c29882ed4281c",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "141625",
+            "tags": "test"
+        },
+        {
+            "filename": "62c9a437625d18c15b9f786d7cbebdf716d62bc1f71604b22ba60236a0b26ce9",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "138633",
+            "tags": "test"
+        },
+        {
+            "filename": "62d723025db5899ad4fe880d5a529d1cff745253ffcc7602495a2561003042eb",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "146958",
+            "tags": "test"
+        },
+        {
+            "filename": "09058b14878b81fe924a01c1bd92da53f18e18673c9bcc99705c297c83521170",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "102977",
+            "tags": "test"
+        },
+        {
+            "filename": "07088b2d45658524558753033bfa8ee00d988698b4ef44c47a48c378f599af53",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "110078",
+            "tags": "test"
+        },
+        {
+            "filename": "783b46fa754a94cbbcd4f6690631a84e302eb045032f685106a0dd849aacede9",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "70352",
+            "tags": "test"
+        },
+        {
+            "filename": "1d8f8824513d83854889494828876de7993911aa3aef58e1726a1f8f59b7e244",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "515388",
+            "tags": "test"
+        },
+        {
+            "filename": "00575a55b510cacfcd4c301384c0961a46d2a59f45d09087c85c6168b87b5062",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "PowerPC",
+            "file size": "129860",
+            "tags": "test"
+        },
+        {
+            "filename": "0294ce5335e748bc5c24157cc53f02d9510e8238a381efee283c13b6677e4678",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "121463",
+            "tags": "test"
+        },
+        {
+            "filename": "01302d6618c9dd0dde759bcde95b5e09b73cfeea80e389b07b2eaf7f209cdbcc",
+            "label": "malware",
+            "family": "mirai",
+            "CPU Architecture": "ARM",
+            "file size": "81544",
+            "tags": "test"
+        },
+        {
+            "filename": "01afa2389f1822ee378a9b8e2d08583c73ede85297888a9094fe8c4733dc7244",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "MIPS",
+            "file size": "162900",
+            "tags": "test"
+        },
+        {
+            "filename": "040ea92928e3c5205bb7179b0e41736402877d99a6e5c9c0c0a1a77ff6111aa1",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "11110",
+            "tags": "test"
+        },
+        {
+            "filename": "335c4e0155d83334e249f2d8bf051163d2b8e677cda5f2d602a68b4f8094ccd5",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "11616",
+            "tags": "test"
+        },
+        {
+            "filename": "09dba4c6554ebf142f391bcbcbe749bbb0d7d5384ba8ff489347f3af98affec3",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "22924",
+            "tags": "test"
+        },
+        {
+            "filename": "1ca6a3d57c765ed185adb0998ef0ad8c550b9fb4d2108b258d62bb3565bb7af8",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "ARM",
+            "file size": "51280",
+            "tags": "test"
+        },
+        {
+            "filename": "93889534becdb0533917f5cb450e66fcea4394acc7ad5c58f9069807246d5c2c",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "PowerPC",
+            "file size": "87696",
+            "tags": "test"
+        },
+        {
+            "filename": "0aeb542abb18f352fe8e5b379cfc5753af947bd993537db57d1bba1a4b6c9746",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "13160",
+            "tags": "test"
+        },
+        {
+            "filename": "038f2192f225eaebd115a1f3150b7d3ee4c0d5cceb47159d16950bc3b188bf41",
+            "label": "benignware",
+            "family": "",
+            "CPU Architecture": "MIPS",
+            "file size": "168096",
+            "tags": "test"
+        },
+        {
+            "filename": "62448d0fc4c7530061a8241b8ce76e2d705d936c7e4a058ae82b11a0a5412a90",
+            "label": "malware",
+            "family": "gafgyt",
+            "CPU Architecture": "ARM",
+            "file size": "93270",
             "tags": "test"
         }
     ]

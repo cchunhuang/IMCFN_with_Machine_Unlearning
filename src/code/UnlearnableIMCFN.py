@@ -33,15 +33,16 @@ class UnlearnableIMCFN:
         
         # -----load logger-----
         
-        self.config.path.log = os.path.join(self.model_folder, os.path.basename(self.config.path.log))
+        self.config.path.log = os.path.join(self.model_folder, 'loging.log')
         self.logger = setup_logger("UnlearnableIMCFN", self.config.path.logging_config, self.config.path.log)
         self.logger.info('Constructing UnlearnableIMCFN object')
         
         # -----spilt data into shards and slices-----
         
         if self.config.train:
-            self.config.path.position = os.path.join(self.model_folder, os.path.basename(self.config.path.position))
-            self.config.path.subdetector_name = os.path.join(self.model_folder, os.path.basename(self.config.path.subdetector_name))
+            if self.config.model.overwrite is False:
+                self.config.path.position = os.path.join(self.model_folder, 'position.csv')
+                self.config.path.subdetector_name = os.path.join(self.model_folder, 'subdetector_name.csv')
             
             labels = self.getLabel()
                 
@@ -67,8 +68,7 @@ class UnlearnableIMCFN:
         subdetector_config.model.del_param('shard')
         subdetector_config.model.del_param('slice')
         
-        subdetector_config.path.del_param('log')
-        subdetector_config.path.set_param('log', self.config.path.log)
+        subdetector_config.path.log = self.config.path.log
         
         write_config_to_file(subdetector_config, self.subdetector_config_path)
         
@@ -114,27 +114,20 @@ class UnlearnableIMCFN:
         # -----process config-----
         
         subdetector_config = read_config(self.subdetector_config_path)
-        subdetector_config.path.del_param('input_files')
-        subdetector_config.path.set_param('input_files', self.subdetector_label_path)
+        subdetector_config.path.input_files = self.subdetector_label_path
         
         # -----train model-----
         
-        TP = 0
-        TN = 0
-        FP = 0
-        FN = 0
         score = []
         
         for shard_idx in shard_list:
             # load pretrained model
-            subdetector_config.path.del_param('pretrained')
-            subdetector_config.path.set_param('pretrained', None if subdetector_name[shard_idx][start_slice[shard_idx]] == '' else subdetector_name[shard_idx][start_slice[shard_idx]])
+            subdetector_config.path.pretrained = None if subdetector_name[shard_idx][start_slice[shard_idx]] == '' else subdetector_name[shard_idx][start_slice[shard_idx]]
             write_config_to_file(subdetector_config, self.subdetector_config_path)
             
             self.imcfn.model(False)
             
-            subdetector_config.path.del_param('pretrained')
-            subdetector_config.path.set_param('pretrained', None)
+            subdetector_config.path.pretrained = None
             
             # get data
             data = [_data for _slice_idx in range(start_slice[shard_idx]) for _data in self.input_data[shard_idx][_slice_idx]]
@@ -145,13 +138,9 @@ class UnlearnableIMCFN:
                 
                 subdetector_name[shard_idx][slice_idx + 1] = os.path.join(self.subdetector_shard_folder[shard_idx], f"slice{slice_idx}.pth")
                 
-                subdetector_config.path.del_param('log')
-                subdetector_config.path.del_param('model')
-                subdetector_config.model.del_param('print_information')
-                
-                subdetector_config.path.set_param('log', os.path.join(self.subdetector_shard_folder[shard_idx], "log.txt"))
-                subdetector_config.path.set_param('model', subdetector_name[shard_idx][slice_idx + 1])
-                subdetector_config.model.set_param('print_information', f"*****Shard: {shard_idx} | Slice: {slice_idx}*****")
+                subdetector_config.path.log = os.path.join(self.subdetector_shard_folder[shard_idx], "log.txt")
+                subdetector_config.path.model = subdetector_name[shard_idx][slice_idx + 1]
+                subdetector_config.model.print_information = f"*****Shard: {shard_idx} | Slice: {slice_idx}*****"
                 write_config_to_file(subdetector_config, self.subdetector_config_path)
                 
                 result = self.imcfn.model(True)
@@ -163,18 +152,38 @@ class UnlearnableIMCFN:
                 test_acc = result['test_result']['accuracy']
                 
                 score.append({"model_name": subdetector_name[shard_idx][slice_idx + 1], "train_acc": train_acc, "train_loss": train_loss, "val_acc": val_acc, "val_loss": val_loss, "test_acc": test_acc})
-                
-            TP += result['TP']
-            TN += result['TN']
-            FP += result['FP']
-            FN += result['FN']
         
         # -----save model-----
         
-        self.config.path.subdetector_name = os.path.join(self.model_folder, os.path.basename(self.config.path.subdetector_name))
         self.saveSubdetectorName(subdetector_name)
         
-        # -----score-----
+        # -----test model-----
+        
+        TP = 0
+        TN = 0
+        FP = 0
+        FN = 0
+        
+        if os.path.exists(self.config.path.test_files):
+            subdetector_config.path.input_files = self.config.path.input_files = self.config.path.test_files
+            write_config_to_file(subdetector_config, self.subdetector_config_path)
+            
+            test_predict = self.predict()
+            test_labels = self.getLabel(self.config.path.test_files)
+            test_labels = {test_labels[i][FILE_NAME]: test_labels[i][LABEL] for i in range(len(test_labels))}
+            
+            for test_dict in test_predict:
+                true_label = test_labels[test_dict['name']]
+                prediction = test_dict['detection']
+                if true_label == prediction:
+                    if true_label == 1:
+                        TP += 1
+                    else:
+                        TN += 1
+                elif true_label == 0:
+                    FN += 1
+                else:
+                    FP += 1
         
         accuracy = (TP + TN) / (TP + TN + FP + FN)
         precision = TP / (TP + FP) if (TP + FP) != 0 else 0
@@ -182,7 +191,9 @@ class UnlearnableIMCFN:
         f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) != 0 else 0
         final_result = {"TP": TP, "TN": TN, "FP": FP, "FN": FN, "accuracy": accuracy, "precision": precision, "recall": recall, "f1_score": f1_score}
         
-        if self.config.path.score is None or self.config.path.score == '':
+        #-----save score-----
+        
+        if self.config.model.overwrite is False:
             self.config.path.score = os.path.join(self.model_folder, "score.json")
         
         with open(self.config.path.score, 'w') as f:
@@ -208,8 +219,7 @@ class UnlearnableIMCFN:
             if subdetector_name[shard_idx][LATEST_MODEL] == None or subdetector_name[shard_idx][LATEST_MODEL] == '':
                 raise ValueError(f"Subdetector shard{shard_idx} is not trained")
             
-            subdetector_config.path.del_param('pretrained')
-            subdetector_config.path.set_param('pretrained', subdetector_name[shard_idx][LATEST_MODEL])
+            subdetector_config.path.pretrained = subdetector_name[shard_idx][LATEST_MODEL]
             write_config_to_file(subdetector_config, self.subdetector_config_path)
             
             self.imcfn.model(False)
@@ -222,11 +232,13 @@ class UnlearnableIMCFN:
         
         result = [{"name": file_name, "detection": max(vote[file_name], key=vote[file_name].get)} for file_name in predict_result.keys()]
         
-        if self.config.path.result is None or self.config.path.result == '':
+        if self.config.model.overwrite is False:
             self.config.path.result = os.path.join(self.model_folder, "predict_result.json")
         
         with open(self.config.path.result, 'w') as f:
             json.dump(result, f, indent=4)
+            
+        return result
     
     def unlearn(self):
         '''
@@ -258,7 +270,10 @@ class UnlearnableIMCFN:
             if not flag:
                 self.logger.warning(f'The file was not learned: {unlearn_data}')
         
-        self.config.path.position = os.path.join(self.model_folder, os.path.basename(self.config.path.position))
+        if self.config.model.overwrite is False:
+            self.config.path.position = os.path.join(self.model_folder, 'position.csv')
+            self.config.path.subdetector_name = os.path.join(self.model_folder, 'subdetector_name.csv')
+            
         self.savePosition()
         
         shard_list = list(shard_list)
@@ -334,11 +349,13 @@ class UnlearnableIMCFN:
             next(reader)
             return [rows for rows in reader]  
         
-    def getLabel(self):
+    def getLabel(self, path: str=None):
         '''
         Get label from csv file.
         '''
-        with open(self.config.path.input_files, 'r', newline='') as f:
+        if path is None:
+            path = self.config.path.input_files
+        with open(path, 'r', newline='') as f:
             reader = csv.reader(f)
             next(reader)
             labels = []
