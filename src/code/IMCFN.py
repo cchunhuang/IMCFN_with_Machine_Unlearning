@@ -101,21 +101,22 @@ class IMCFN(detector):
                 with open(self.config.path.test_files, newline='') as csvfile:
                     reader = csv.DictReader(csvfile)
                     for row in reader:
-                        test_labels[row['filename']] = row['label']
+                        test_labels[row['filename']] = self.label_idx[row['label']]
                             
                 TP = TN = FP = FN = 0
                 for filename in test_predict.keys():
                     true_label = test_labels[filename]
                     prediction = test_predict[filename]
+                    # possitive: benignware(label = 0), negative: malware
                     if true_label == prediction:
-                        if true_label == 1:
+                        if true_label == 0:
                             TP += 1
                         else:
                             TN += 1
-                    elif true_label == 0:
-                        FN += 1
-                    else:
+                    elif prediction == 0:
                         FP += 1
+                    else:
+                        FN += 1
                         
                 accuracy = (TP + TN) / (TP + TN + FP + FN)
                 precision = TP / (TP + FP) if (TP + FP) != 0 else 0

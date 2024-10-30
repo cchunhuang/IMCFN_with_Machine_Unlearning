@@ -203,18 +203,18 @@ class VGG16:
                     valid_loss += valid_loss_c.item()
                     iter2 += 1
                     
-                    # possitive: malware, negative: benignware(label = 0)
                     if epoch == epochs - 1:
                         for i in range(len(label)):
+                            # possitive: benignware(label = 0), negative: malware
                             if label[i] == predicted[i]:
-                                if label[i] == 1:
+                                if label[i] == 0:
                                     TP += 1
                                 else:
                                     TN += 1
-                            elif label[i] == 0:
-                                FN += 1
-                            else:
+                            elif predicted[i] == 0:
                                 FP += 1
+                            else:
+                                FN += 1
             
             self.logger.info('Validation acc: %.3f | loss: %.3f' % (correct_valid / total_valid, valid_loss / iter2))
                                             

@@ -175,15 +175,16 @@ class UnlearnableIMCFN:
             for test_dict in test_predict:
                 true_label = test_labels[test_dict['name']]
                 prediction = test_dict['detection']
+                # possitive: benignware(label = 0), negative: malware
                 if true_label == prediction:
-                    if true_label == 1:
+                    if true_label == 'benignware':
                         TP += 1
                     else:
                         TN += 1
-                elif true_label == 0:
-                    FN += 1
-                else:
+                elif prediction == 'benignware':
                     FP += 1
+                else:
+                    FN += 1
         
         accuracy = (TP + TN) / (TP + TN + FP + FN)
         precision = TP / (TP + FP) if (TP + FP) != 0 else 0
