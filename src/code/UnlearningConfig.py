@@ -27,15 +27,15 @@ def read_unlearning_config(input_config_path=DEFAULT_INPUT_CONFIG_PATH):
                 writer_test.writerow(['filename', 'label'])
                 for input_data in unlearning_config['label']:
                     if input_data['tags'] == 'test':
-                        writer_test.writerow([input_data['filename'], input_data['label']])
+                        writer_test.writerow([input_data.get('origFileName', input_data['filename']), input_data['label']])
                     else:
-                        writer.writerow([input_data['filename'], input_data['label']])
+                        writer.writerow([input_data.get('origFileName', input_data['filename']), input_data['label']])
     else:
         with open(unlearning_config['config']['path']['input_files'], 'w', newline='') as csvfile:
             writer = csv.writer(csvfile)
             writer.writerow(['filename', 'label'])
             for input_data in unlearning_config['label']:
-                writer.writerow([input_data['filename'], input_data['label']])
+                writer.writerow([input_data.get('origFileName', input_data['filename']), input_data['label']])
             
     return Config.parse_obj(unlearning_config['config'])
     

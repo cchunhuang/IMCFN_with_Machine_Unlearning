@@ -31,9 +31,9 @@
         "fill": null,
         "horizontal_flip": 0,
         "train_ratio": 0.8,
-        "epochs": 30,
+        "epochs": 3,
         "shard": 8,
-        "slice": 8,
+        "slice": 50,
         "print_information": "",
         "save_image": false,
         "overwrite": false
