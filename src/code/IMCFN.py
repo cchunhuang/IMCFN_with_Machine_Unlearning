@@ -97,11 +97,8 @@ class IMCFN(detector):
             if os.path.exists(self.config.path.test_files):
                 test_predict = self.predict(self.config.path.test_files)
                 
-                test_labels = {}
-                with open(self.config.path.test_files, newline='') as csvfile:
-                    reader = csv.DictReader(csvfile)
-                    for row in reader:
-                        test_labels[row['filename']] = self.label_idx[row['label']]
+                test_labels = self.getLabel(self.config.path.test_files, False)
+                test_labels = {file_name: label for file_name, label in test_labels.items()}
                             
                 TP = TN = FP = FN = 0
                 for filename in test_predict.keys():
@@ -147,16 +144,17 @@ class IMCFN(detector):
         
         predictions = self.vgg16.predict(selected_data)
         
+        selected_files = self.getFileName(file_path)
         result = {}
         for file_name, prediction in zip(selected_files, predictions):
             for label, index in self.label_idx.items():
                 if index == prediction:
-                    result[os.path.basename(file_name)] = label
+                    result[file_name] = label
                     break
         
         return result
     
-    def getLabel(self, file_path: str):
+    def getLabel(self, file_path: str, full_path: bool=True):
         '''
         Get label from csv file.
         '''
@@ -169,7 +167,10 @@ class IMCFN(detector):
                 if not os.path.exists(path):
                     self.logger.warning(f"File not found: {path}")
                     continue
-                labels[path] = row[LABEL]
+                if full_path:
+                    labels[path] = row[LABEL]
+                else:
+                    labels[row[FILE_NAME]] = row[LABEL]
         return labels
     
     def getFilePath(self, file_path: str):
@@ -187,6 +188,22 @@ class IMCFN(detector):
                     continue
                 file_path.append(path)
         return file_path
+    
+    def getFileName(self, file_path: str):
+        '''
+        Get file name from csv file.
+        '''
+        with open(file_path, 'r', newline='') as csvfile:
+            rows = csv.reader(csvfile)
+            next(rows) # skip header
+            file_name = []
+            for row in rows:
+                path = os.path.join(self.config.folder.dataset, row[FILE_NAME])
+                if not os.path.exists(path):
+                    self.logger.warning(f"File not found: {path}")
+                    continue
+                file_name.append(row[FILE_NAME])
+        return file_name
 
 if __name__ == '__main__':
     imcfn = IMCFN("config_origin.json")
