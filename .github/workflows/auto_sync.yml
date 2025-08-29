@@ -1,0 +1,22 @@
+name: Auto Sync to Main Repo
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispatch to main-repo
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.MAIN_REPO_TOKEN }}
+          repository: ${{ secrets.DISPATCH_REPO }}
+          event-type: sync-subtree
+          client-payload: |
+            {
+              "name": "IMCFN",
+              "repo_url": "https://github.com/cchunhuang/IMCFN_with_Machine_Unlearning.git"
+            }
