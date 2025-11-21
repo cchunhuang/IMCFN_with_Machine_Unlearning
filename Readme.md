@@ -19,15 +19,39 @@ Key features:
 
 ## Table of Contents
 
-1. [Quick Setup](#quick-setup)
-2. [Manual Setup](#manual-setup)
-3. [Usage](#usage)
-4. [File Structure](#file-structure)
-5. [Configuration](#configuration)
-6. [Model Architecture](#model-architecture)
-7. [Data Processing](#data-processing)
-8. [Training Process](#training-process)
-9. [Unlearning Process](#unlearning-process)
+1. [Project Structure](#project-structure)
+2. [Quick Setup](#quick-setup)
+3. [Manual Setup](#manual-setup)
+4. [Usage](#usage)
+5. [File Structure](#file-structure)
+6. [Configuration](#configuration)
+7. [Model Architecture](#model-architecture)
+8. [Data Processing](#data-processing)
+9. [Training Process](#training-process)
+10. [Unlearning Process](#unlearning-process)
+11. [Key Methods Reference](#key-methods-reference)
+12. [Output Structure](#output-structure)
+13. [Troubleshooting](#troubleshooting)
+14. [Contributing](#contributing)
+15. [License](#license)
+16. [References](#references)
+
+## Project Structure
+
+```
+IMCFN/
+├── src/                      # Source code
+│   ├── main.py              # Entry point
+│   ├── UnlearnableIMCFN.py  # Main implementation
+│   ├── IMCFN.py             # Base classifier
+│   ├── VGG16.py             # Neural network model
+│   ├── ImageGenerator.py    # Binary-to-image converter
+│   ├── Logger.py            # Logging setup
+│   ├── config.json          # Configuration file
+│   └── logging_config.json  # Logging configuration
+├── requirements_*.txt       # Python dependencies
+└── Readme.md               # This file
+```
 
 ## Quick Setup
 
@@ -60,9 +84,9 @@ This project was developed using Python 3.11.5. It is strongly recommended to us
 1. Ensure you have Python 3.11.5 installed on your system. You can download it from the [official Python website](https://www.python.org/downloads/release/python-3115/).
 
 2. Clone the repository:
-   ```
-   git clone [repository_url]
-   cd [repository_name]
+   ```bash
+   git clone https://github.com/cchunhuang/IMCFN_with_Machine_Unlearning.git
+   cd IMCFN_with_Machine_Unlearning
    ```
 
 3. Choose the appropriate requirements file based on your hardware:
@@ -73,13 +97,16 @@ This project was developed using Python 3.11.5. It is strongly recommended to us
    You can also choose a different PyTorch version that suits your needs.
 
 4. Install the required dependencies:
-   ```
+   ```bash
    pip install -r requirements_[your_choice].txt
    ```
 
    Replace `[your_choice]` with either `cpu`, `cuda118`, or `cuda121` based on your selection.
 
-5. Set up the project structure as defined in the configuration file.
+5. Prepare your dataset:
+   - Place binary files in the dataset folder (e.g., `./dataset/`)
+   - Create a CSV label file with columns: filename, label, type (train/test)
+   - Update the paths in `config.json` to match your setup
 
 ## Usage
 
@@ -100,7 +127,7 @@ python main.py path/to/your/config.json
 
 The script will automatically determine the mode (train, predict, or unlearn) based on the configuration file.
 
-### Using UnlearnableIMCFN.py
+### Using UnlearnableIMCFN Directly
 
 You can use the `UnlearnableIMCFN` class directly in your Python scripts:
 
@@ -108,100 +135,285 @@ You can use the `UnlearnableIMCFN` class directly in your Python scripts:
 from UnlearnableIMCFN import UnlearnableIMCFN
 
 # Initialize with a configuration file
-config_path = 'path/to/your/dataToPython.json'
-uv = UnlearnableIMCFN(config_path)
+config_path = './config.json'
+unlearnable_imcfn = UnlearnableIMCFN(config_path)
 
-# Training
-uv.trainModel()
+# Training with sharded approach
+unlearnable_imcfn.trainModel()
 
 # Prediction
-predictions = uv.predict()
+predictions = unlearnable_imcfn.predict()
 
 # Unlearning
-uv.unlearn()
+unlearnable_imcfn.unlearn()
+
+# Train specific shards (for unlearning)
+unlearnable_imcfn.trainModel(shard_list=[0, 2], start_slice=[1, 0])
 ```
 
-Make sure to set the appropriate flags in your configuration file for the desired operation mode.
+### Using IMCFN Directly
 
-### Using IMCFN.py
-
-You can use the `IMCFN` class directly in your Python scripts for basic malware classification without unlearning capabilities:
+You can use the base `IMCFN` class for basic malware classification:
 
 ```python
 from IMCFN import IMCFN
 
 # Initialize with a configuration file
-config_path = 'path/to/your/config.json'
+config_path = './config.json'
 imcfn = IMCFN(config_path)
 
 # Vectorize the data (convert binary to images)
-imcfn.vectorize()
+imcfn.get_vector()
 
 # Train the model
-result = imcfn.model(training=True)
+result = imcfn.get_model(action="train")
 
 # Make predictions
-predictions = imcfn.predict()
+predictions = imcfn.get_prediction(data_type='test')
 
-# Get labels
-labels = imcfn.getLabel('path/to/label/file.csv')
+# Get labels from CSV file
+labels = imcfn.getLabel('dataset.csv', data_type='train')
 ```
 
-Note that when using IMCFN directly, you won't have access to the unlearning functionality provided by UnlearnableIMCFN.
+Note: The base `IMCFN` class doesn't support the sharded training approach used for machine unlearning.
 
 ## File Structure
 
-- `UnlearnableIMCFN.py`: Main class implementing the unlearnable IMCFN.
-- `IMCFN.py`: Implements the base IMCFN (Image-based Malware Classification using Fine-tuned Convolutional Neural Network).
-- `ImageGenerator.py`: Handles the conversion of binary files to images.
-- `VGG16.py`: Implements the VGG16 neural network model.
-- `Logger.py`: Sets up logging for the project.
-- `main.py`: Entry point for running the project.
-- `UnlearningConfig.py`: Handles the configuration parsing and setup.
-- `logging_config.json`: Configuration file for logging.
-- `dataToPython.json`: Configuration file for UnlearnableIMCFN.
-- `config.json`: Configuration file for IMCFN.
+### Core Files
+- `main.py`: Entry point for running the UnlearnableIMCFN system. Handles command-line arguments and dispatches to train or predict actions.
+- `UnlearnableIMCFN.py`: Main class implementing the unlearnable IMCFN with sharded and sliced training approach for machine unlearning.
+- `IMCFN.py`: Base class implementing the IMCFN (Image-based Malware Classification using Fine-tuned Convolutional Neural Network).
+- `ImageGenerator.py`: Converts malware binary files to image representations using colormap visualization.
+- `VGG16.py`: Implements a customized VGG16 neural network with transfer learning for malware classification.
+- `Logger.py`: Sets up logging system for the project.
+
+### Configuration Files
+- `config.json`: Main configuration file for the system (used by both IMCFN and UnlearnableIMCFN).
+- `logging_config.json`: Configuration file for logging settings.
 
 ## Configuration
 
-The project uses JSON configuration files. There are two main configuration files:
+The project uses a single JSON configuration file (`config.json`) with the following structure:
 
-1. `dataToPython.json`: Used by UnlearnableIMCFN. It includes:
-   - `path`: Specifies file paths (input files, logging config, etc.)
-   - `folder`: Specifies various folder paths (dataset, model, etc.)
-   - `model`: Sets model parameters (batch size, learning rate, etc.)
-   - `classify`, `train`, `predict`, `unlearn`: Flags for different operation modes
+### Configuration Sections
 
-2. `config.json`: Used by IMCFN. It includes similar sections as `dataToPython.json`, but may have some differences specific to IMCFN without unlearning capabilities.
+1. **`file`**: File paths configuration
+   - `label`: Path to CSV file containing dataset labels
+   - `pretrained`: Path to pretrained model or "DEF" for default VGG16 weights
+   - `logging_config`: Path to logging configuration JSON file
+   - `model`: Path to save trained model (auto-generated for UnlearnableIMCFN)
+   - `log`: Path to log file
+   - `position`: Position tracking file for sharded training
+   - `subdetector_name`: Subdetector naming file for sharded models. **Modify the folder of `subdetector_name.csv` to select specific pretrained model!**
+   - `score`: Path to save training scores
+   - `result`: Path to save prediction results
 
-Ensure you have the correct configuration file for the class you're using (UnlearnableIMCFN or IMCFN).
+2. **`folder`**: Directory paths configuration
+   - `dataset`: Directory containing binary files to classify
+   - `vector`: Directory to save generated images (if save_image is enabled)
+   - `model`: Directory to save trained models
+   - `predict`: Directory to save prediction results
+   - `label`: Directory containing label files
+   - `log`: Directory for log files
+
+3. **`params`**: Model parameters and settings
+   - `mode`: Operation mode (e.g., "detection")
+   - `vector`: Vectorization settings
+     - `save_image`: Whether to save generated images (true/false)
+   - `model`: Model training parameters
+     - `model_name`: Neural network architecture
+     - `batch_size`: Batch size for training
+     - `learning_rate`: Learning rate
+     - `rotation`, `width_shift`, `height_shift`, `zoom`, `shear`, `fill`, `horizontal_flip`: Data augmentation parameters
+     - `train_ratio`: Ratio of training data to validation data
+     - `epochs`: Number of training epochs
+     - `shard`: Number of shards for distributed training
+     - `slice`: Number of slices per shard
+     - `overwrite`: Whether to overwrite existing model files
+
+4. **`action`**: Operation to perform
+   - `"train"`: Train the model
+   - `"predict"`: Make predictions on dataset
+   - `"unlearn"`: Unlearn data
 
 ## Model Architecture
 
-The project uses a modified VGG16 architecture:
+The project uses a modified VGG16 architecture for malware classification:
 
-- Custom classifier layers added to the base VGG16 model
-- Specific layers are unfrozen for fine-tuning
-- Uses SGD optimizer and CrossEntropyLoss
-- Supports transfer learning by loading pre-trained weights
+### Base Architecture
+- Pre-trained VGG16 model from torchvision
+- Input size: 224x224x3 (RGB images)
+- Transfer learning approach: Load pre-trained ImageNet weights
+
+### Customization
+- Custom classifier layers replace the original VGG16 classifier
+- Specific layers are unfrozen for fine-tuning on malware data
+- Multi-class classification output (number of classes = number of malware families + 1 for benignware)
+
+### Training Configuration
+- Optimizer: SGD (Stochastic Gradient Descent)
+- Loss function: CrossEntropyLoss
+- Learning rate: Configurable (default: 5e-6)
+- Batch size: Configurable (default: 32)
+- Supports loading checkpoints for continued training or inference
+
+### Key Features
+- Automatic device selection (CUDA if available, otherwise CPU)
+- Data augmentation during training
+- Train/validation split for model evaluation
+- Batch normalization and dropout for regularization
+- Support for saving and loading model weights
 
 ## Data Processing
 
-- Binary files are converted to images using the `ImageGenerator` class
-- Images are resized to 224x224 pixels
-- Data augmentation techniques are applied (rotation, flipping, etc.)
-- Dataset is split into training and validation sets
+### Binary to Image Conversion
+- Binary malware files are converted to images using the `ImageGenerator` class
+- Uses colormap visualization (jet colormap) for binary-to-image conversion
+- Image width is automatically determined based on file size:
+  - ≤10KB: 32px width
+  - ≤30KB: 64px width
+  - ≤60KB: 128px width
+  - ≤100KB: 256px width
+  - ≤200KB: 384px width
+  - ≤500KB: 512px width
+  - ≤1000KB: 768px width
+  - >1000KB: 1024px width
+- Images are resized to 224x224 pixels for VGG16 input
+- RGB channels are used (first 3 channels of colormap output)
+
+### Data Augmentation
+- Configurable data augmentation techniques:
+  - Random rotation
+  - Width and height shift
+  - Zoom/scale transformation
+  - Shear transformation
+  - Horizontal flip
+  - Custom fill mode for transformed areas
+
+### Dataset Structure
+- Dataset labels are stored in CSV format with columns:
+  - File name
+  - Label (malware family or "benignware")
+  - Type ("train" or "test")
+- Dataset is split into training and validation sets based on `train_ratio`
+- Supports separate test set for evaluation
 
 ## Training Process
 
-- Implements a shard-based training approach
-- Supports resuming training from checkpoints
-- Calculates and logs various metrics (accuracy, precision, recall, F1 score)
-- Saves model checkpoints and training logs
+### Basic Training (IMCFN)
+- Uses transfer learning with pre-trained VGG16 model
+- Fine-tunes specific layers for malware classification
+- Uses SGD optimizer with configurable learning rate
+- Uses CrossEntropyLoss for multi-class classification
+- Automatically evaluates on test set if available
+- Calculates metrics: accuracy, precision, recall, F1 score
+- Saves model checkpoints with timestamp
+- Logs training progress and metrics
+
+### Sharded Training (UnlearnableIMCFN)
+- Implements a shard-based and slice-based training approach
+- Data is distributed across multiple shards and slices:
+  - Each shard contains multiple slices of data
+  - Batch size determines data distribution granularity
+  - Training is performed incrementally on slices
+- Enables efficient machine unlearning by retraining specific shards
+- Supports resuming training from specific shard and slice
+- Maintains separate models for each shard-slice combination
+- Uses SEED value (42) for reproducible data shuffling
+- Saves position tracking and subdetector naming information
 
 ## Unlearning Process
 
-- Identifies the shards and slices containing data to be unlearned
-- Retrains the affected shards while preserving other learned information
-- Updates the model structure to reflect the unlearned data
+The machine unlearning capability is achieved through the sharded training approach:
+
+1. **Data Location**: Identify which shards and slices contain the data to be unlearned
+2. **Selective Retraining**: Only retrain the affected shards from the appropriate slice
+3. **Model Preservation**: Other shards remain unchanged, preserving learned information
+4. **Efficient Updates**: No need to retrain the entire model from scratch
+
+### How to Perform Unlearning
+
+```python
+# Example: Unlearn data in shard 0 and 2, retraining from slice 1 and 0 respectively
+unlearnable_imcfn.trainModel(shard_list=[0, 2], start_slice=[1, 0])
+```
+
+**Note**: The unlearning functionality is currently commented out in `main.py` but can be implemented by:
+1. Identifying the position of data to be unlearned using the position tracking file
+2. Calling `trainModel()` with appropriate `shard_list` and `start_slice` parameters
+3. Only the specified shards are retrained from the specified slices forward
+
+## Key Methods Reference
+
+### IMCFN Class Methods
+
+- `get_vector()`: Convert binary files to image representations
+- `get_model(action)`: Train model (action="train") or prepare for inference (action="predict")
+- `get_prediction(data_type)`: Make predictions on specified data type
+- `getLabel(file_path, full_path, data_type)`: Load labels from CSV file
+- `getFilePath(file_path, data_type)`: Get file paths filtered by data type
+- `getFileName(file_path, data_type)`: Get file names filtered by data type
+
+### UnlearnableIMCFN Class Methods
+
+- `trainModel(shard_list, start_slice)`: Train model with sharded approach
+- `predict(data_type)`: Make predictions using ensemble of shard models
+- `savePosition()`: Save data position tracking for unlearning
+- `saveSubdetectorLabel(data)`: Save labels for subdetector training
+- `getLabel(data_type)`: Load labels with data type filtering
+
+## Output Structure
+
+When training, the system creates the following structure:
+
+```
+output/
+├── model/
+│   └── YYYYMMDD_HHMM/              # Timestamp of training session
+│       ├── shard0/
+│       │   ├── slice0.pth           # Model checkpoint for shard 0, slice 0
+│       │   ├── slice1.pth
+│       │   └── ...
+│       ├── shard1/
+│       │   └── ...
+│       ├── subdetector_label.csv    # Labels for current training batch
+│       ├── subdetector_config.json  # Configuration for subdetectors
+│       ├── position.csv             # Data position tracking
+│       ├── subdetector_name.csv     # Subdetector model names
+│       └── logging.log              # Training logs
+└── predict/
+    └── result.json                  # Prediction results
+```
+
+## Troubleshooting
+
+### Common Issues
+
+1. **File not found errors**: Ensure all paths in `config.json` are correct and point to existing files/directories
+2. **CUDA out of memory**: Reduce `batch_size` in configuration
+3. **Image generation fails**: Check that binary files are accessible and not corrupted
+4. **Model loading errors**: Verify that `pretrained` path points to a valid model file or use "DEF" for default weights
+
+### Logging
+
+- All operations are logged to the file specified in `config.file.log`
+- Logging configuration can be customized in `logging_config.json`
+- Log level and format can be adjusted for debugging
+
+## Contributing
+
+Contributions are welcome! Please ensure your code follows the existing style and includes appropriate documentation.
+
+## License
+
+See LICENSE file for details.
+
+## References
+
+1. Vasan, D., Alazab, M., Wassan, S., Naeem, H., Safaei, B., & Zheng, Q. (2020). IMCFN: Image-based malware classification using fine-tuned convolutional neural network architecture. Computer Networks, 171, 107138.
+2. Bourtoule, L., Chandrasekaran, V., Choquette-Choo, C. A., Jia, H., Travers, A., Zhang, B., ... & Papernot, N. (2021). Machine unlearning. In 2021 IEEE Symposium on Security and Privacy (SP) (pp. 141-159). IEEE.
+
+## Author
+
+cchunhuang - 2024
 

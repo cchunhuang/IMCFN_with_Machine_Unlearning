@@ -1,0 +1,71 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+pip-wheel-metadata/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+ENV/
+env/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+
+# Output directories - generated during runtime
+output/model/*
+output/predict/*
+output/vectorize/*
+output/log/*
+!output/model/.gitkeep
+!output/predict/.gitkeep
+!output/vectorize/.gitkeep
+!output/log/.gitkeep
+
+# Generated configuration files with data
+src/dataToPython.json
+output/config/dataToPython.json
+output/config/dataToPython_predict.json
+output/config/dataToPython_unlearn.json
+
+# Generated label files
+output/label/label_from_json.csv
+output/label/test_dataset.csv
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Large dataset files (keep structure, ignore data)
+dataset/*/data/*
+!dataset/*/data/.gitkeep

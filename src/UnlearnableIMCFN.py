@@ -1,30 +1,71 @@
+"""
+UnlearnableIMCFN - IMCFN with Machine Unlearning Capabilities
+
+This module implements an extended version of IMCFN that supports machine unlearning.
+It uses a sharded and sliced training approach to enable efficient removal of specific
+training data without complete retraining.
+
+Author: cchunhuang
+Date: 2024
+"""
+
 import os
 import csv
 import json
 import time
 import copy
 import random
+from box import Box
 
-from malwareDetector.config import read_config, write_config_to_file
-from UnlearningConfig import read_unlearning_config
 from IMCFN import IMCFN
 from Logger import setup_logger
 
 FILE_NAME = 0
 LABEL = 1
+TYPE = 2
+
+DEFAULT_CONFIG_PATH = './config.json'
 
 class UnlearnableIMCFN:
     def __init__(self, config_path: str=None):
+        """
+        Initialize the UnlearnableIMCFN classifier.
+        
+        This constructor sets up the sharded training structure and initializes
+        the underlying IMCFN model for each shard.
+        
+        Args:
+            config_path: Path to configuration JSON file (default: './config.json')
+            
+        Config Parameters Used:
+            - self.config.folder: All folder paths (model, dataset, etc.)
+            - self.config.params.model.shard: Number of shards for training
+            - self.config.params.model.slice: Number of slices per shard
+            - self.config.params.model.batch_size: Batch size for data distribution
+            - self.config.params.model.overwrite: Whether to overwrite existing files
+            - self.config.file.logging_config: Path to logging configuration
+            - self.config.file.log: Path to log output file
+            - self.config.action: Action to perform ('train', 'predict', or 'unlearn')
+        """
         if config_path is None:
-            self.config = read_unlearning_config()
-        else:
-            self.config = read_unlearning_config(config_path)
+            config_path = DEFAULT_CONFIG_PATH
+            
+        # Read config from JSON file
+        with open(config_path, 'r', encoding='utf-8') as f:
+            config_data = json.load(f)
+        
+        # Create folders
+        for folder in config_data['folder'].values():
+            os.makedirs(folder, exist_ok=True)
+        
+        # Convert to Box for easy access
+        self.config = Box(config_data)
         
         # -----set paths-----
         
         self.model_folder = os.path.join(self.config.folder.model, time.strftime("%Y%m%d_%H%M", time.localtime()))
         
-        self.subdetector_shard_folder = [os.path.join(self.model_folder, f"shard{i}") for i in range(self.config.model.shard)]
+        self.subdetector_shard_folder = [os.path.join(self.model_folder, f"shard{i}") for i in range(self.config.params.model.shard)]
         for shard_folder in self.subdetector_shard_folder:
             os.makedirs(shard_folder, exist_ok=True)
             
@@ -33,28 +74,28 @@ class UnlearnableIMCFN:
         
         # -----load logger-----
         
-        self.config.path.log = os.path.join(self.model_folder, 'loging.log')
-        self.logger = setup_logger("UnlearnableIMCFN", self.config.path.logging_config, self.config.path.log)
+        self.config.file.log = os.path.join(self.model_folder, 'loging.log')
+        self.logger = setup_logger("UnlearnableIMCFN", self.config.file.logging_config, self.config.file.log)
         self.logger.info('Constructing UnlearnableIMCFN object')
         
         # -----spilt data into shards and slices-----
         
-        if self.config.train:
-            if self.config.model.overwrite is False:
-                self.config.path.position = os.path.join(self.model_folder, 'position.csv')
-                self.config.path.subdetector_name = os.path.join(self.model_folder, 'subdetector_name.csv')
+        if self.config.action == "train":
+            if self.config.params.model.overwrite is False:
+                self.config.file.position = os.path.join(self.model_folder, 'position.csv')
+                self.config.file.subdetector_name = os.path.join(self.model_folder, 'subdetector_name.csv')
             
-            labels = self.getLabel()
+            labels = self.getLabel(data_type='train')
                 
             SEED_VALUE = 42
             random.seed(SEED_VALUE)
             random.shuffle(labels)
                 
-            self.input_data = [[[] for j in range(self.config.model.slice)] for i in range(self.config.model.shard)]
-            for i in range(0, len(labels), self.config.model.batch_size):
-                shard_idx = i // self.config.model.batch_size % self.config.model.shard
-                slice_idx = i // self.config.model.batch_size // self.config.model.shard % self.config.model.slice
-                for j in range(i, min(i + self.config.model.batch_size, len(labels))):
+            self.input_data = [[[] for j in range(self.config.params.model.slice)] for i in range(self.config.params.model.shard)]
+            for i in range(0, len(labels), self.config.params.model.batch_size):
+                shard_idx = i // self.config.params.model.batch_size % self.config.params.model.shard
+                slice_idx = i // self.config.params.model.batch_size // self.config.params.model.shard % self.config.params.model.slice
+                for j in range(i, min(i + self.config.params.model.batch_size, len(labels))):
                     self.input_data[shard_idx][slice_idx].append(labels[j])
             
             self.savePosition()
@@ -62,59 +103,77 @@ class UnlearnableIMCFN:
         #-----initialize IMCFN-----
         
         subdetector_config = copy.deepcopy(self.config)
-        subdetector_config.path.del_param('position')
-        subdetector_config.path.del_param('subdetector_name')
-        subdetector_config.path.del_param('unlearn')
-        subdetector_config.model.del_param('shard')
-        subdetector_config.model.del_param('slice')
+        subdetector_config.file.pop('position', None)
+        subdetector_config.file.pop('subdetector_name', None)
+        subdetector_config.params.model.pop('shard', None)
+        subdetector_config.params.model.pop('slice', None)
         
-        subdetector_config.path.log = self.config.path.log
+        subdetector_config.file.log = self.config.file.log
         
-        write_config_to_file(subdetector_config, self.subdetector_config_path)
+        with open(self.subdetector_config_path, 'w', encoding='utf-8') as f:
+            json.dump(subdetector_config.to_dict(), f, indent=4)
         
         self.imcfn = IMCFN(self.subdetector_config_path)
         
     def trainModel(self, shard_list: list=None, start_slice: list=None):
-        '''
-        Train the model.
-        '''
+        """
+        Train the model using sharded and sliced approach.
+        
+        Args:
+            shard_list: List of shard indices to train (default: all shards)
+            start_slice: List of starting slice indices for each shard (default: 0 for all)
+            
+        Note:
+            The model is trained incrementally on slices within each shard,
+            enabling efficient unlearning later.
+            
+        Config Parameters Used:
+            - self.config.params.model.shard: Number of shards
+            - self.config.params.model.slice: Number of slices per shard
+            - self.config.params.model.overwrite: Whether to overwrite existing files
+            - self.config.params.model.epochs: Number of training epochs
+            - self.config.file.label: Path to label file
+            - self.config.file.subdetector_name: Path to subdetector name file
+            - self.config.file.score: Path to save training scores
+        """
         self.logger.info('Training model')
         
         # -----Validation-----
         
         if shard_list is None:
-            shard_list = [i for i in range(self.config.model.shard)]
+            shard_list = [i for i in range(self.config.params.model.shard)]
         else:
-            if not 1 <= len(shard_list) <= self.config.model.shard:
-                raise ValueError(f"shard_list size must be between 1 and {self.config.model.shard}")
+            if not 1 <= len(shard_list) <= self.config.params.model.shard:
+                raise ValueError(f"shard_list size must be between 1 and {self.config.params.model.shard}")
             for item in shard_list:
-                if not isinstance(item, int) or not 0 <= item < self.config.model.shard:
-                    raise ValueError(f"All items in shard_list must be integers between 0 and {self.config.model.shard - 1}")
+                if not isinstance(item, int) or not 0 <= item < self.config.params.model.shard:
+                    raise ValueError(f"All items in shard_list must be integers between 0 and {self.config.params.model.shard - 1}")
             
         if start_slice is None:
-            start_slice = [0 for i in range(self.config.model.shard)]
+            start_slice = [0 for i in range(self.config.params.model.shard)]
         else:
-            if len(start_slice) != self.config.model.shard:
-                raise ValueError(f"start_slice size must be exactly {self.config.model.shard}")
+            if len(start_slice) != self.config.params.model.shard:
+                raise ValueError(f"start_slice size must be exactly {self.config.params.model.shard}")
             for item in start_slice:
-                if not isinstance(item, int) or not 0 <= item < self.config.model.slice:
-                    raise ValueError(f"All items in start_slice must be integers between 0 and {self.config.model.slice - 1}")
+                if not isinstance(item, int) or not 0 <= item < self.config.params.model.slice:
+                    raise ValueError(f"All items in start_slice must be integers between 0 and {self.config.params.model.slice - 1}")
                 
         # -----vectorize-----        
         
-        self.imcfn.vectorize()
+        self.imcfn.get_vector()
                 
         # -----initialize subdetector name-----
         
-        if not os.path.exists(self.config.path.subdetector_name):
-            subdetector_name = [["DEF"] + [None for j in range(self.config.model.slice)] for i in range(self.config.model.shard)]
+        if not os.path.exists(self.config.file.subdetector_name):
+            subdetector_name = [["DEF"] + [None for j in range(self.config.params.model.slice)] for i in range(self.config.params.model.shard)]
         else:                
             subdetector_name = self.getSubdetectorName()   
             
         # -----process config-----
         
-        subdetector_config = read_config(self.subdetector_config_path)
-        subdetector_config.path.input_files = self.subdetector_label_path
+        with open(self.subdetector_config_path, encoding='utf-8') as f:
+            subdetector_config = Box(json.load(f))
+        subdetector_config.file.label = self.subdetector_label_path
         
         # -----train model-----
         
@@ -122,34 +181,36 @@ class UnlearnableIMCFN:
         
         for shard_idx in shard_list:
             # load pretrained model
-            subdetector_config.path.pretrained = None if subdetector_name[shard_idx][start_slice[shard_idx]] == '' else subdetector_name[shard_idx][start_slice[shard_idx]]
-            write_config_to_file(subdetector_config, self.subdetector_config_path)
+            subdetector_config.file.pretrained = None if subdetector_name[shard_idx][start_slice[shard_idx]] == '' else subdetector_name[shard_idx][start_slice[shard_idx]]
+            with open(self.subdetector_config_path, 'w', encoding='utf-8') as f:
+                json.dump(subdetector_config.to_dict(), f, indent=4)
             
-            self.imcfn.model(False)
+            self.imcfn.get_model("predict")
             
-            subdetector_config.path.pretrained = None
+            subdetector_config.file.pretrained = None
             
             # get data
             data = [_data for _slice_idx in range(start_slice[shard_idx]) for _data in self.input_data[shard_idx][_slice_idx]]
             
-            for slice_idx in range(start_slice[shard_idx], self.config.model.slice):
+            for slice_idx in range(start_slice[shard_idx], self.config.params.model.slice):
                 data.extend(self.input_data[shard_idx][slice_idx])
                 self.saveSubdetectorLabel(data)
                 
                 subdetector_name[shard_idx][slice_idx + 1] = os.path.join(self.subdetector_shard_folder[shard_idx], f"slice{slice_idx}.pth")
                 
-                subdetector_config.path.log = os.path.join(self.subdetector_shard_folder[shard_idx], "log.txt")
-                subdetector_config.path.model = subdetector_name[shard_idx][slice_idx + 1]
-                subdetector_config.model.print_information = f"*****Shard: {shard_idx} | Slice: {slice_idx}*****"
-                write_config_to_file(subdetector_config, self.subdetector_config_path)
+                subdetector_config.file.log = os.path.join(self.subdetector_shard_folder[shard_idx], "log.txt")
+                subdetector_config.file.model = subdetector_name[shard_idx][slice_idx + 1]
+                subdetector_config.params.model.print_information = f"*****Shard: {shard_idx} | Slice: {slice_idx}*****"
+                with open(self.subdetector_config_path, 'w', encoding='utf-8') as f:
+                    json.dump(subdetector_config.to_dict(), f, indent=4)
                 
-                result = self.imcfn.model(True)
+                result = self.imcfn.get_model("train")
                 
                 train_acc = [{"epoch": i, "accuracy": result['train_acc'][i]} for i in range(len(result['train_acc']))]
                 train_loss = [{"epoch": i, "loss": result['train_loss'][i]} for i in range(len(result['train_loss']))]
                 val_acc = [{"epoch": i, "accuracy": result['valid_acc'][i]} for i in range(len(result['valid_acc']))]
                 val_loss = [{"epoch": i, "loss": result['valid_loss'][i]} for i in range(len(result['valid_loss']))]
-                test_acc = result['test_result']['accuracy']
+                test_acc = result.get('test_result', {}).get('accuracy', None)
                 
                 score.append({"model_name": subdetector_name[shard_idx][slice_idx + 1], "train_acc": train_acc, "train_loss": train_loss, "val_acc": val_acc, "val_loss": val_loss, "test_acc": test_acc})
         
@@ -164,17 +225,44 @@ class UnlearnableIMCFN:
         FP = 0
         FN = 0
         
-        if os.path.exists(self.config.path.test_files):
-            subdetector_config.path.input_files = self.config.path.input_files = self.config.path.test_files
-            write_config_to_file(subdetector_config, self.subdetector_config_path)
+        # Check if there are test data
+        test_labels = self.getLabel(data_type='test')
+        if len(test_labels) > 0:
+            subdetector_config.file.label = self.config.file.label
+            with open(self.subdetector_config_path, 'w', encoding='utf-8') as f:
+                json.dump(subdetector_config.to_dict(), f, indent=4)
             
-            test_predict = self.predict()
-            test_labels = self.getLabel(self.config.path.test_files)
-            test_labels = {test_labels[i][FILE_NAME]: test_labels[i][LABEL] for i in range(len(test_labels))}
+            # Predict on test dataset using voting from all shards
+            test_file_names = [label[FILE_NAME] for label in test_labels]
+            test_labels_dict = {test_labels[i][FILE_NAME]: test_labels[i][LABEL] for i in range(len(test_labels))}
             
-            for test_dict in test_predict:
-                true_label = test_labels[test_dict['name']]
-                prediction = test_dict['detection']
+            vote = {file_name: {} for file_name in test_file_names}
+            
+            LATEST_MODEL = -1
+            
+            for shard_idx in range(self.config.params.model.shard):
+                if subdetector_name[shard_idx][LATEST_MODEL] == None or subdetector_name[shard_idx][LATEST_MODEL] == '':
+                    self.logger.warning("Subdetector shard%s is not trained, skipping test", shard_idx)
+                    continue
+                
+                subdetector_config.file.pretrained = subdetector_name[shard_idx][LATEST_MODEL]
+                with open(self.subdetector_config_path, 'w', encoding='utf-8') as f:
+                    json.dump(subdetector_config.to_dict(), f, indent=4)
+                
+                self.imcfn.get_model("predict")
+                predict_result = self.imcfn.get_prediction(data_type='test')
+                for file_name in predict_result.keys():
+                    if predict_result[file_name] not in vote[file_name].keys():
+                        vote[file_name][predict_result[file_name]] = 1
+                    else:
+                        vote[file_name][predict_result[file_name]] += 1
+            
+            # Calculate metrics
+            for file_name in vote.keys():
+                if len(vote[file_name]) == 0:
+                    continue
+                true_label = test_labels_dict[file_name]
+                prediction = max(vote[file_name], key=vote[file_name].get)
                 # possitive: benignware(label = 0), negative: malware
                 if true_label == prediction:
                     if true_label == 'benignware':
@@ -186,45 +274,68 @@ class UnlearnableIMCFN:
                 else:
                     FN += 1
         
-        accuracy = (TP + TN) / (TP + TN + FP + FN)
+        accuracy = (TP + TN) / (TP + TN + FP + FN) if (TP + TN + FP + FN) > 0 else 0
         precision = TP / (TP + FP) if (TP + FP) != 0 else 0
         recall = TP / (TP + FN) if (TP + FN) != 0 else 0
         f1_score = 2 * (precision * recall) / (precision + recall) if (precision + recall) != 0 else 0
         final_result = {"TP": TP, "TN": TN, "FP": FP, "FN": FN, "accuracy": accuracy, "precision": precision, "recall": recall, "f1_score": f1_score}
         
+        # Log test results
+        if len(test_labels) > 0:
+            self.logger.info("=" * 50)
+            self.logger.info("Test Results:")
+            self.logger.info("TP: %d, TN: %d, FP: %d, FN: %d", TP, TN, FP, FN)
+            self.logger.info("Accuracy: %.4f", accuracy)
+            self.logger.info("Precision: %.4f", precision)
+            self.logger.info("Recall: %.4f", recall)
+            self.logger.info("F1-Score: %.4f", f1_score)
+            self.logger.info("=" * 50)
+        else:
+            self.logger.info("No test data available for evaluation")
+        
         #-----save score-----
         
-        if self.config.model.overwrite is False:
-            self.config.path.score = os.path.join(self.model_folder, "score.json")
+        if self.config.params.model.overwrite is False:
+            self.config.file.score = os.path.join(self.model_folder, "score.json")
         
-        with open(self.config.path.score, 'w') as f:
+        with open(self.config.file.score, 'w', encoding='utf-8') as f:
             json.dump([{"final_result": final_result}] + score, f, indent=4)
         
     def predict(self):
-        '''
-        Predict the label of the file.
-        '''
+        """
+        Predict labels using ensemble voting across all shards.
+        
+        Returns:
+            List of dictionaries containing file names and predicted labels
+            
+        Config Parameters Used:
+            - self.config.params.model.shard: Number of shards
+            - self.config.params.model.overwrite: Whether to overwrite existing results
+            - self.config.file.result: Path to save prediction results
+        """
         self.logger.info('Predicting')
         
-        self.imcfn.vectorize()
+        self.imcfn.get_vector()
         
         file_names = self.getFileName()
         subdetector_name = self.getSubdetectorName()
-        subdetector_config = read_config(self.subdetector_config_path)
+        with open(self.subdetector_config_path, encoding='utf-8') as f:
+            subdetector_config = Box(json.load(f))
         
         vote = {file_name: {} for file_name in file_names}
         
         LATEST_MODEL = -1
         
-        for shard_idx in range(self.config.model.shard):
+        for shard_idx in range(self.config.params.model.shard):
             if subdetector_name[shard_idx][LATEST_MODEL] == None or subdetector_name[shard_idx][LATEST_MODEL] == '':
                 raise ValueError(f"Subdetector shard{shard_idx} is not trained")
             
-            subdetector_config.path.pretrained = subdetector_name[shard_idx][LATEST_MODEL]
-            write_config_to_file(subdetector_config, self.subdetector_config_path)
+            subdetector_config.file.pretrained = subdetector_name[shard_idx][LATEST_MODEL]
+            with open(self.subdetector_config_path, 'w', encoding='utf-8') as f:
+                json.dump(subdetector_config.to_dict(), f, indent=4)
             
-            self.imcfn.model(False)
-            predict_result = self.imcfn.predict()
+            self.imcfn.get_model("predict")
+            predict_result = self.imcfn.get_prediction()
             for file_name in predict_result.keys():
                 if predict_result[file_name] not in vote[file_name].keys():
                     vote[file_name][predict_result[file_name]] = 1
@@ -233,30 +344,41 @@ class UnlearnableIMCFN:
         
         result = [{"name": file_name, "detection": max(vote[file_name], key=vote[file_name].get)} for file_name in predict_result.keys()]
         
-        if self.config.model.overwrite is False:
-            self.config.path.result = os.path.join(self.model_folder, "predict_result.json")
+        if self.config.params.model.overwrite is False:
+            self.config.file.result = os.path.join(self.model_folder, "predict_result.json")
         
-        with open(self.config.path.result, 'w') as f:
+        with open(self.config.file.result, 'w', encoding='utf-8') as f:
             json.dump(result, f, indent=4)
             
         return result
     
     def unlearn(self):
-        '''
-        Unlearn the model.
-        '''
+        """
+        Remove specific training samples from the model (machine unlearning).
+        
+        This method identifies which shards and slices contain the data to be removed,
+        and retrains only those affected portions of the model.
+        
+        Config Parameters Used:
+            - self.config.params.model.shard: Number of shards
+            - self.config.params.model.slice: Number of slices per shard
+            - self.config.params.model.overwrite: Whether to overwrite existing files
+            - self.config.file.position: Path to position tracking file
+            - self.config.file.subdetector_name: Path to subdetector name file
+            - self.config.file.label: Path to label file
+        """
         self.logger.info('Unlearning')
         
         self.getPosition()
         file_names = self.getFileName()
         
         shard_list = set()
-        start_slice = [self.config.model.slice - 1 for i in range(self.config.model.shard)]
+        start_slice = [self.config.params.model.slice - 1 for i in range(self.config.params.model.shard)]
         
         for unlearn_data in file_names:
             flag = False
-            for shard_idx in range(self.config.model.shard):
-                for slice_idx in range(self.config.model.slice):
+            for shard_idx in range(self.config.params.model.shard):
+                for slice_idx in range(self.config.params.model.slice):
                     for data in self.input_data[shard_idx][slice_idx]:
                         if data[FILE_NAME] == unlearn_data:
                             self.input_data[shard_idx][slice_idx].remove(data)
@@ -269,34 +391,39 @@ class UnlearnableIMCFN:
                 if flag:
                     break
             if not flag:
-                self.logger.warning(f'The file was not learned: {unlearn_data}')
+                self.logger.warning('The file was not learned: %s', unlearn_data)
         
-        if self.config.model.overwrite is False:
-            self.config.path.position = os.path.join(self.model_folder, 'position.csv')
-            self.config.path.subdetector_name = os.path.join(self.model_folder, 'subdetector_name.csv')
+        if self.config.params.model.overwrite is False:
+            self.config.file.position = os.path.join(self.model_folder, 'position.csv')
+            self.config.file.subdetector_name = os.path.join(self.model_folder, 'subdetector_name.csv')
             
         self.savePosition()
         
         shard_list = list(shard_list)
         if len(shard_list) != 0:
-            self.logger.info(f'Retrain shard: {shard_list}')
-            self.logger.info(f'Start slice: {start_slice}')
+            self.logger.info('Retrain shard: %s', shard_list)
+            self.logger.info('Start slice: %s', start_slice)
             
-            with open(self.config.path.input_files, 'w', newline='') as f:
+            with open(self.config.file.label, 'w', newline='', encoding='utf-8') as f:
                 writer = csv.writer(f)
-                writer.writerow(['file_name', 'label'])
+                writer.writerow(['file_name', 'label', 'type'])
                 for shard_idx in shard_list:
-                    for slice_idx in range(self.config.model.slice):
+                    for slice_idx in range(self.config.params.model.slice):
                         for data in self.input_data[shard_idx][slice_idx]:
-                            writer.writerow(data)
+                            writer.writerow([data[FILE_NAME], data[LABEL], 'train'])
                     
             self.trainModel(shard_list, start_slice)
                 
     def savePosition(self):
-        '''
-        Save the position of the data.
-        '''
-        with open(self.config.path.position, 'w', newline='') as f:
+        """
+        Save the position (shard and slice) of each data sample to a CSV file.
+        
+        This information is crucial for efficient machine unlearning.
+        
+        Config Parameters Used:
+            - self.config.file.position: Path to save position tracking file
+        """
+        with open(self.config.file.position, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(['file_name', 'label', 'shard', 'slice'])
             for shard_idx in range(len(self.input_data)):
@@ -305,92 +432,145 @@ class UnlearnableIMCFN:
                         writer.writerow([data[FILE_NAME], data[LABEL], shard_idx, slice_idx])
         
     def getPosition(self):
-        '''
-        Get the position of the data.
-        '''
-        if not os.path.exists(self.config.path.position):
-            raise FileNotFoundError(f"File not found: {self.config.path.position}")
+        """
+        Load the position (shard and slice) of each data sample from CSV file.
+        
+        Raises:
+            FileNotFoundError: If position file does not exist
+            
+        Config Parameters Used:
+            - self.config.file.position: Path to position tracking file
+            - self.config.params.model.slice: Number of slices per shard
+            - self.config.params.model.shard: Number of shards
+        """
+        if not os.path.exists(self.config.file.position):
+            raise FileNotFoundError(f"File not found: {self.config.file.position}")
         
         SHARD_IDX = 2
         SLICE_IDX = 3
         
-        self.input_data = [[[] for j in range(self.config.model.slice)] for i in range(self.config.model.shard)]
-        with open(self.config.path.position, 'r', newline='') as f:
+        self.input_data = [[[] for j in range(self.config.params.model.slice)] for i in range(self.config.params.model.shard)]
+        with open(self.config.file.position, 'r', newline='', encoding='utf-8') as f:
             reader = csv.reader(f)
             next(reader)
             for rows in reader:
                 self.input_data[int(rows[SHARD_IDX])][int(rows[SLICE_IDX])].append([rows[FILE_NAME], rows[LABEL]])
         
     def saveSubdetectorLabel(self, data: list):
-        '''
-        Save the label of the subdetector.
-        '''
-        with open(self.subdetector_label_path, 'w', newline='') as f:
+        """
+        Save labels for the current subdetector training.
+        
+        Args:
+            data: List of data samples with file names and labels
+        """
+        with open(self.subdetector_label_path, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
-            writer.writerow(['file_name', 'label'])
+            writer.writerow(['file_name', 'label', 'type'])
             for i in range(len(data)):
-                writer.writerow(data[i])
+                writer.writerow([data[i][FILE_NAME], data[i][LABEL], 'train'])
         
     def saveSubdetectorName(self, model_name: list):
-        '''
-        Save the name of the subdetector.
-        '''
-        with open(self.config.path.subdetector_name, 'w', newline='') as f:
+        """
+        Save the model file paths for all subdetectors.
+        
+        Args:
+            model_name: 2D list of model paths organized by shard and slice
+            
+        Config Parameters Used:
+            - self.config.file.subdetector_name: Path to subdetector name file
+            - self.config.params.model.slice: Number of slices per shard
+        """
+        with open(self.config.file.subdetector_name, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
-            writer.writerow(['default'] + [f'slice{i}' for i in range(self.config.model.slice)])
-            for i in range(self.config.model.shard):
+            writer.writerow(['default'] + [f'slice{i}' for i in range(self.config.params.model.slice)])
+            for i in range(self.config.params.model.shard):
                 writer.writerow(model_name[i])       
                 
     def getSubdetectorName(self):
-        '''
-        Get the name of the subdetector.
-        '''
-        with open(self.config.path.subdetector_name, 'r', newline='') as f:
+        """
+        Load the model file paths for all subdetectors.
+        
+        Returns:
+            2D list of model paths organized by shard and slice
+            
+        Config Parameters Used:
+            - self.config.file.subdetector_name: Path to subdetector name file
+        """
+        with open(self.config.file.subdetector_name, 'r', newline='', encoding='utf-8') as f:
             reader = csv.reader(f)
             next(reader)
             return [rows for rows in reader]  
         
-    def getLabel(self, path: str=None):
-        '''
-        Get label from csv file.
-        '''
+    def getLabel(self, path: str=None, data_type: str=None):
+        """
+        Get labels from CSV file.
+        
+        Args:
+            path: Path to CSV file (default: config.file.label)
+            data_type: Filter by type column ('train', 'test', or None for all)
+            
+        Returns:
+            List of [file_name, label] pairs
+            
+        Config Parameters Used:
+            - self.config.file.label: Default path to label file (if path is None)
+            - self.config.folder.dataset: Base folder path for dataset files
+        """
         if path is None:
-            path = self.config.path.input_files
-        with open(path, 'r', newline='') as f:
+            path = self.config.file.label
+        with open(path, 'r', newline='', encoding='utf-8') as f:
             reader = csv.reader(f)
             next(reader)
             labels = []
             for rows in reader:
+                # Skip if data_type filter is specified and doesn't match
+                if data_type is not None and len(rows) > TYPE and rows[TYPE] != data_type:
+                    continue
+                    
                 if not os.path.exists(os.path.join(self.config.folder.dataset, rows[FILE_NAME])):
-                    self.logger.warning(f"File not found: {os.path.join(self.config.folder.dataset, rows[FILE_NAME])}")
+                    self.logger.warning("File not found: %s", os.path.join(self.config.folder.dataset, rows[FILE_NAME]))
                     continue
                 labels.append([rows[FILE_NAME], rows[LABEL]])
         return labels
     
-    def getFileName(self):
-        '''
-        Get file name from csv file.
-        '''
-        with open(self.config.path.input_files, 'r', newline='') as f:
+    def getFileName(self, data_type: str=None):
+        """
+        Get file names from CSV file.
+        
+        Args:
+            data_type: Filter by type column ('train', 'test', or None for all)
+            
+        Returns:
+            List of file names
+            
+        Config Parameters Used:
+            - self.config.file.label: Path to label file
+        """
+        with open(self.config.file.label, 'r', newline='', encoding='utf-8') as f:
             reader = csv.reader(f)
             next(reader)
-            file_name = [rows[FILE_NAME] for rows in reader]
-        return file_name
+            file_names = []
+            for rows in reader:
+                # Skip if data_type filter is specified and doesn't match
+                if data_type is not None and len(rows) > TYPE and rows[TYPE] != data_type:
+                    continue
+                file_names.append(rows[FILE_NAME])
+        return file_names
         
 if __name__ == '__main__':
     # train
-    config_path = './output/config/dataToPython.json'
-    uv = UnlearnableIMCFN(config_path)
+    train_config_path = './output/config/dataToPython.json'
+    uv = UnlearnableIMCFN(train_config_path)
     uv.trainModel()
     
     #predict
-    # config_path = './output/config/dataToPython_predict.json'
-    # uv = UnlearnableIMCFN(config_path)
+    # predict_config_path = './output/config/dataToPython_predict.json'
+    # uv = UnlearnableIMCFN(predict_config_path)
     # predict = uv.predict()
     # print(predict)
     
     #unlearn
-    # config_path = './output/config/dataToPython_unlearn.json'
-    # uv = UnlearnableIMCFN(config_path)
+    # unlearn_config_path = './output/config/dataToPython_unlearn.json'
+    # uv = UnlearnableIMCFN(unlearn_config_path)
     # uv.unlearn()
     

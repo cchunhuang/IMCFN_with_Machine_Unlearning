@@ -1,3 +1,14 @@
+"""
+VGG16 - VGG16 Neural Network for Malware Classification
+
+This module implements a customized VGG16 neural network for malware classification.
+It uses transfer learning with a pre-trained VGG16 model and fine-tunes specific layers
+for binary classification (malware vs benignware).
+
+Author: cchunhuang
+Date: 2024
+"""
+
 import os
 import time
 import numpy as np
@@ -10,16 +21,46 @@ import torchvision.models as models
 from Logger import setup_logger
 
 class VGG16:
-    def __init__(self, batch_size=4, learning_rate=5e-6, degrees=[0, 0], width_shift=0.0, 
-                 height_shift=0.0, scale=[1.0, 1.0], shear=[0, 0, 0, 0], fill=None, horizontal_flip=0):
+    def __init__(self, batch_size=4, learning_rate=5e-6, degrees=None, width_shift=0.0, 
+                 height_shift=0.0, scale=None, shear=None, fill=None, horizontal_flip=0):
+        """
+        Initialize the VGG16 model with specified hyperparameters and data augmentation settings.
+        
+        Args:
+            batch_size: Number of samples per batch
+            learning_rate: Learning rate for optimizer
+            degrees: Range for random rotation (default: [0, 0])
+            width_shift: Horizontal shift range (fraction of total width)
+            height_shift: Vertical shift range (fraction of total height)
+            scale: Scale range for random zoom (default: [1.0, 1.0])
+            shear: Shear range for random shear transformation (default: [0, 0, 0, 0])
+            fill: Pixel fill value for areas outside boundaries
+            horizontal_flip: Probability of random horizontal flip
+        """
         self.logger = setup_logger("VGG16")
         self.logger.info('Constructing VGG16 object')
         
+        # Initialize mutable default arguments
+        if degrees is None:
+            degrees = [0, 0]
+        if scale is None:
+            scale = [1.0, 1.0]
+        if shear is None:
+            shear = [0, 0, 0, 0]
+        
         self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-        self.logger.info('Device: ' + str(self.device))
+        self.logger.info('Device: %s', self.device)
         
         self.batch_size = batch_size
         self.learning_rate = learning_rate
+        
+        # Initialize attributes that will be set later
+        self.input_data = None
+        self.train_loader = None
+        self.valid_loader = None
+        self.model = None
+        self.optimizer = None
+        self.criterion = None
         
         tf_list = [
             transforms.Resize((224, 224)),
@@ -38,32 +79,45 @@ class VGG16:
         self.tf_image = transforms.Compose([transforms.ToPILImage()] + tf_list)
         
     def loadDataFromFolder(self, input_path: str):
-        '''
-        Load data from input path.
-        '''
-        self.logger.info('Loading data from ' + input_path)
+        """
+        Load data from a folder organized by class labels.
+        
+        Args:
+            input_path: Path to folder containing subfolders for each class
+        """
+        self.logger.info('Loading data from %s', input_path)
         self.input_data = ImageFolder(input_path, transform=self.tf)
         
     def loadDataFromImageFolder(self, input_data: ImageFolder):
-        '''
-        Load data from ImageFolder.
-        '''
+        """
+        Load data from an ImageFolder object.
+        
+        Args:
+            input_data: Pre-constructed ImageFolder dataset
+        """
         self.logger.info('Loading data from ImageFolder')
         self.input_data = input_data
         
     def loadDataFromArray(self, input_data: np.ndarray, label: np.ndarray):
-        '''
-        Load data from array.
-        '''
+        """
+        Load data from numpy arrays.
+        
+        Args:
+            input_data: Array of image data (N x H x W x C)
+            label: Array of labels (N,)
+        """
         self.logger.info('Loading data from array')
         images = input_data.astype(np.uint8)
         images = [self.tf_image(image) for image in images]
         self.input_data = torch.utils.data.TensorDataset(torch.stack(images), torch.tensor(label.astype(np.int64), dtype=torch.int64))
         
     def splitTrainData(self, train_ratio=0.8):
-        '''
+        """
         Split data into training and validation sets.
-        '''
+        
+        Args:
+            train_ratio: Fraction of data to use for training (default: 0.8)
+        """
         self.logger.info('Split train data')
         train_size = int(train_ratio * len(self.input_data))
         val_size = len(self.input_data) - train_size
@@ -74,9 +128,15 @@ class VGG16:
         self.valid_loader = torch.utils.data.DataLoader(valid_data, batch_size=self.batch_size,shuffle=True)
           
     def loadModel(self, pretrained: str=None):
-        '''
-        Load VGG16 model.
-        '''
+        """
+        Load VGG16 model with customized classifier layers.
+        
+        The model uses transfer learning with frozen feature extraction layers
+        and trainable final convolutional and classifier layers.
+        
+        Args:
+            pretrained: Path to pre-trained model checkpoint (optional)
+        """
         self.logger.info('Loading VGG16 model')
         # set model
         self.model = models.vgg16(weights=models.VGG16_Weights.DEFAULT)
@@ -115,14 +175,24 @@ class VGG16:
         # summary(self.model, input_size=(self.batch_size, 3, 224, 224))
         
     def trainModel(self, epochs, log_path: str=None, model_path: str=None, print_information: str=""):
-        '''
-        Train the model.
-        '''
+        """
+        Train the model for specified number of epochs.
+        
+        Args:
+            epochs: Number of training epochs
+            log_path: Path to save training logs (optional)
+            model_path: Path to save trained model (optional)
+            print_information: Additional information to log
+            
+        Returns:
+            Dictionary containing training metrics including accuracy, precision,
+            recall, F1-score, and training/validation history
+        """
         self.logger.info('Training model')
         self.logger.info(print_information)
         
         if log_path is not None:
-            with open(log_path, 'a') as f:
+            with open(log_path, 'a', encoding='utf-8') as f:
                 f.write(print_information + '\n\n'
                         'Hyperparameters: ' + '\n' + 
                         'batch_size: ' + str(self.batch_size) + '\n' +
@@ -139,15 +209,15 @@ class VGG16:
         train_losses, valid_losses = [], []
         train_acc, valid_acc = [], []
         
-        for epoch in range(epochs):
+        for epoch_num in range(epochs):
             start_time = time.time()
-            iter, iter2 = 0, 0 # iteration count, used to calculate the average loss
+            iteration, iteration2 = 0, 0 # iteration count, used to calculate the average loss
             correct_train, total_train = 0, 0
             correct_valid, total_valid = 0, 0
             train_loss, valid_loss = 0.0, 0.0
 
             self.model.train() # set the model to training mode
-            self.logger.info('epoch: ' + str(epoch + 1) + ' / ' + str(epochs))  
+            self.logger.info('epoch: %d / %d', epoch_num + 1, epochs)  
             
             # ---------------------------
             # Training Stage
@@ -165,10 +235,10 @@ class VGG16:
                 total_train += label.size(0) # update the total count
                 correct_train += (predicted == label).sum() # update the correct count
                 train_loss += train_loss_c.item() # update the loss
-                iter += 1 # update the iteration count
+                iteration += 1 # update the iteration count
                 
                 # possitive: malware, negative: benignware(label = 0)
-                if epoch == epochs - 1:
+                if epoch_num == epochs - 1:
                     for i in range(len(label)):
                         if label[i] == predicted[i]:
                             if label[i] == 1:
@@ -180,7 +250,7 @@ class VGG16:
                         else:
                             FP += 1
                         
-            self.logger.info('Training acc: %.3f | loss: %.3f' % (correct_train / total_train, train_loss / iter))
+            self.logger.info('Training acc: %.3f | loss: %.3f', correct_train / total_train, train_loss / iteration)
             
             # if output_folder is not None:
             #     output_path = os.path.join(output_folder, 'epoch' + str(epoch + 1) + '.pth')
@@ -201,9 +271,9 @@ class VGG16:
                     total_valid += label.size(0)
                     correct_valid += (predicted == label).sum()
                     valid_loss += valid_loss_c.item()
-                    iter2 += 1
+                    iteration2 += 1
                     
-                    if epoch == epochs - 1:
+                    if epoch_num == epochs - 1:
                         for i in range(len(label)):
                             # possitive: benignware(label = 0), negative: malware
                             if label[i] == predicted[i]:
@@ -216,21 +286,21 @@ class VGG16:
                             else:
                                 FN += 1
             
-            self.logger.info('Validation acc: %.3f | loss: %.3f' % (correct_valid / total_valid, valid_loss / iter2))
+            self.logger.info('Validation acc: %.3f | loss: %.3f', correct_valid / total_valid, valid_loss / iteration2)
                                             
             train_acc.append((correct_train / total_train).cpu().tolist()) # training accuracy
             valid_acc.append((correct_valid / total_valid).cpu().tolist())    # validation accuracy
-            train_losses.append((train_loss / iter))                    # train loss 
-            valid_losses.append((valid_loss / iter2))    # validate loss
+            train_losses.append((train_loss / iteration))                    # train loss 
+            valid_losses.append((valid_loss / iteration2))    # validate loss
 
             end_time = time.time()
-            self.logger.info('Cost %.3f(secs)' % (end_time - start_time))
+            self.logger.info('Cost %.3f(secs)', end_time - start_time)
             
             if log_path is not None:
-                with open(log_path, 'a') as f:
-                    f.write('epoch: ' + str(epoch + 1) + ' / ' + str(epochs) + '\n')
-                    f.write('Training acc: %.3f | loss: %.3f' % (correct_train / total_train, train_loss / iter) + '\n')
-                    f.write('Validation acc: %.3f | loss: %.3f' % (correct_valid / total_valid, valid_loss / iter2) + '\n')
+                with open(log_path, 'a', encoding='utf-8') as f:
+                    f.write('epoch: ' + str(epoch_num + 1) + ' / ' + str(epochs) + '\n')
+                    f.write('Training acc: %.3f | loss: %.3f' % (correct_train / total_train, train_loss / iteration) + '\n')
+                    f.write('Validation acc: %.3f | loss: %.3f' % (correct_valid / total_valid, valid_loss / iteration2) + '\n')
                     f.write('Cost %.3f(secs)' % (end_time - start_time) + '\n' + '\n')
         
         if model_path is not None:
@@ -244,10 +314,13 @@ class VGG16:
         return {"TP": TP, "TN": TN, "FP": FP, "FN": FN, "accuracy": accuracy, "precision": precision, "recall": recall, "f1_score": f1_score, "train_acc": train_acc, "valid_acc": valid_acc, "train_loss": train_losses, "valid_loss": valid_losses, "model_path": model_path}
     
     def saveModel(self, checkpoint_path: str):
-        '''
-        Save the model.
-        '''
-        self.logger.info('Saving model to ' + checkpoint_path)
+        """
+        Save the model checkpoint.
+        
+        Args:
+            checkpoint_path: Path to save the model checkpoint
+        """
+        self.logger.info('Saving model to %s', checkpoint_path)
         torch.save({
                 # 'epoch': epoch,
                 'model_state_dict': self.model.state_dict(),
@@ -256,9 +329,15 @@ class VGG16:
                 }, checkpoint_path)
         
     def predict(self, input_data: np.ndarray):
-        '''
-        Predict the input data.
-        '''
+        """
+        Predict labels for input data.
+        
+        Args:
+            input_data: Array of images to classify
+            
+        Returns:
+            List of predicted class indices
+        """
         self.logger.info('Predicting')
         
         self.model = self.model.to(self.device)

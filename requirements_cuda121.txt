@@ -1,5 +1,5 @@
 --find-links https://download.pytorch.org/whl/torch_stable.html
-malwareDetector==0.1.13
+MalwareClassifier>=0.1.5
 matplotlib==3.8.4
 numpy==1.26.4
 opencv_python==4.10.0.84
