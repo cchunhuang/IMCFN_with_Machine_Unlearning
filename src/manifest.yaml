@@ -1,0 +1,23 @@
+key: im
+name: IMCFN
+version: "1.0.0"
+tasks: [train, predict]
+inputs:
+    dataset: directory   # 從後端傳入資料夾路徑
+outputs:
+    model: file
+    metrics: json
+    predictions: csv
+paramsDefault:
+    model_name: "VGG16"
+    batch_size: 32
+    learning_rate: 5e-6
+    train_ratio: 0.8
+    epochs: 30
+    rotation: [0, 0]
+    width_shift: 0.0
+    height_shift: 0.0
+    zoom: [1.0, 1.0]
+    shear: [0, 0, 0, 0]
+    fill: null
+    horizontal_flip: 0

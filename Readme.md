@@ -121,11 +121,16 @@ Here are examples of how to use the project:
 
 To use the project via `main.py`, simply run the script with the appropriate configuration file:
 
-```
-python main.py path/to/your/config.json
+```bash
+python main.py [config_path]
 ```
 
-The script will automatically determine the mode (train, predict, or unlearn) based on the configuration file.
+If no configuration file is provided, it will use the default `./config.json`. The script will automatically determine the mode (train, predict, or unlearn) based on the `action` field in the configuration file.
+
+Supported actions:
+- `"train"`: Train the model with sharded approach
+- `"predict"`: Make predictions using ensemble voting
+- `"unlearn"`: Perform machine unlearning on specific data samples
 
 ### Using UnlearnableIMCFN Directly
 
@@ -180,12 +185,12 @@ Note: The base `IMCFN` class doesn't support the sharded training approach used 
 ## File Structure
 
 ### Core Files
-- `main.py`: Entry point for running the UnlearnableIMCFN system. Handles command-line arguments and dispatches to train or predict actions.
+- `main.py`: Entry point for running the UnlearnableIMCFN system. Handles command-line arguments and dispatches to train, predict, or unlearn actions.
 - `UnlearnableIMCFN.py`: Main class implementing the unlearnable IMCFN with sharded and sliced training approach for machine unlearning.
-- `IMCFN.py`: Base class implementing the IMCFN (Image-based Malware Classification using Fine-tuned Convolutional Neural Network).
-- `ImageGenerator.py`: Converts malware binary files to image representations using colormap visualization.
+- `IMCFN.py`: Base class implementing the IMCFN (Image-based Malware Classification using Fine-tuned Convolutional Neural Network). Inherits from `MalwareClassifier` base class.
+- `ImageGenerator.py`: Converts malware binary files to image representations using colormap visualization (jet colormap).
 - `VGG16.py`: Implements a customized VGG16 neural network with transfer learning for malware classification.
-- `Logger.py`: Sets up logging system for the project.
+- `Logger.py`: Sets up logging system for the project using MalwareClassifier's logging infrastructure with project-specific configuration.
 
 ### Configuration Files
 - `config.json`: Main configuration file for the system (used by both IMCFN and UnlearnableIMCFN).
@@ -218,18 +223,27 @@ The project uses a single JSON configuration file (`config.json`) with the follo
 
 3. **`params`**: Model parameters and settings
    - `mode`: Operation mode (e.g., "detection")
+   - `feature`: Feature extraction parameters (empty, not used in current implementation)
    - `vector`: Vectorization settings
      - `save_image`: Whether to save generated images (true/false)
    - `model`: Model training parameters
-     - `model_name`: Neural network architecture
-     - `batch_size`: Batch size for training
-     - `learning_rate`: Learning rate
-     - `rotation`, `width_shift`, `height_shift`, `zoom`, `shear`, `fill`, `horizontal_flip`: Data augmentation parameters
-     - `train_ratio`: Ratio of training data to validation data
-     - `epochs`: Number of training epochs
-     - `shard`: Number of shards for distributed training
-     - `slice`: Number of slices per shard
-     - `overwrite`: Whether to overwrite existing model files
+     - `model_name`: Neural network architecture (e.g., "VGG16")
+     - `batch_size`: Batch size for training (default: 32)
+     - `learning_rate`: Learning rate for SGD optimizer (default: 5e-6)
+     - `rotation`: Range for random rotation in degrees [min, max] (e.g., [0, 0] for no rotation)
+     - `width_shift`: Horizontal shift range as fraction of total width (e.g., 0.0)
+     - `height_shift`: Vertical shift range as fraction of total height (e.g., 0.0)
+     - `zoom`: Scale range for random zoom [min, max] (e.g., [1.0, 1.0] for no zoom)
+     - `shear`: Shear range [x_min, x_max, y_min, y_max] (e.g., [0, 0, 0, 0] for no shear)
+     - `fill`: Pixel fill value for areas outside boundaries (null for default)
+     - `horizontal_flip`: Probability of random horizontal flip (0-1)
+     - `train_ratio`: Ratio of training data to validation data (default: 0.8)
+     - `epochs`: Number of training epochs (default: 30)
+     - `shard`: Number of shards for distributed training (default: 1)
+     - `slice`: Number of slices per shard (default: 1)
+     - `print_information`: Additional information to print/log during training
+     - `overwrite`: Whether to overwrite existing model files (default: false)
+   - `predict`: Prediction parameters (empty in current implementation)
 
 4. **`action`**: Operation to perform
    - `"train"`: Train the model
@@ -268,7 +282,7 @@ The project uses a modified VGG16 architecture for malware classification:
 
 ### Binary to Image Conversion
 - Binary malware files are converted to images using the `ImageGenerator` class
-- Uses colormap visualization (jet colormap) for binary-to-image conversion
+- Uses colormap visualization (matplotlib's jet colormap) for binary-to-image conversion
 - Image width is automatically determined based on file size:
   - ≤10KB: 32px width
   - ≤30KB: 64px width
@@ -278,8 +292,10 @@ The project uses a modified VGG16 architecture for malware classification:
   - ≤500KB: 512px width
   - ≤1000KB: 768px width
   - >1000KB: 1024px width
-- Images are resized to 224x224 pixels for VGG16 input
-- RGB channels are used (first 3 channels of colormap output)
+- Binary data is read as uint8 array and reshaped into 2D array based on calculated width
+- Colormap is applied to convert 2D grayscale to 4-channel RGBA (224x224x4)
+- Images are resized to 224x224 pixels using OpenCV for VGG16 input
+- RGB channels are used (first 3 channels [:, :, :3] of the RGBA output)
 
 ### Data Augmentation
 - Configurable data augmentation techniques:
@@ -338,29 +354,39 @@ The machine unlearning capability is achieved through the sharded training appro
 unlearnable_imcfn.trainModel(shard_list=[0, 2], start_slice=[1, 0])
 ```
 
-**Note**: The unlearning functionality is currently commented out in `main.py` but can be implemented by:
-1. Identifying the position of data to be unlearned using the position tracking file
-2. Calling `trainModel()` with appropriate `shard_list` and `start_slice` parameters
-3. Only the specified shards are retrained from the specified slices forward
+**Note**: The unlearning functionality is fully implemented in `main.py` and can be triggered by:
+1. Setting `action` to `"unlearn"` in the configuration file
+2. Ensuring `file.label` points to a CSV file containing the samples to be unlearned
+3. The `unlearn()` method will:
+   - Identify which shards and slices contain the data to be unlearned
+   - Remove those samples from the input data
+   - Retrain only the affected shards from the appropriate slices
+   - Save updated position and subdetector name files
 
 ## Key Methods Reference
 
 ### IMCFN Class Methods
 
-- `get_vector()`: Convert binary files to image representations
-- `get_model(action)`: Train model (action="train") or prepare for inference (action="predict")
-- `get_prediction(data_type)`: Make predictions on specified data type
-- `getLabel(file_path, full_path, data_type)`: Load labels from CSV file
-- `getFilePath(file_path, data_type)`: Get file paths filtered by data type
-- `getFileName(file_path, data_type)`: Get file names filtered by data type
+- `get_feature()`: Not required for IMCFN (logs that feature extraction is not needed)
+- `get_vector()`: Convert binary files to image representations and create label indices
+- `get_model(action)`: Train model (action="train") or prepare for inference (action="predict"). Returns training results dictionary if training.
+- `get_prediction(data_type)`: Make predictions on specified data type. Returns dictionary mapping file names to predicted labels.
+- `getLabel(file_path, full_path, data_type)`: Load labels from CSV file. Returns dictionary mapping paths/names to labels.
+- `getFilePath(file_path, data_type)`: Get file paths filtered by data type. Returns list of full paths.
+- `getFileName(file_path, data_type)`: Get file names filtered by data type. Returns list of file names.
 
 ### UnlearnableIMCFN Class Methods
 
-- `trainModel(shard_list, start_slice)`: Train model with sharded approach
-- `predict(data_type)`: Make predictions using ensemble of shard models
-- `savePosition()`: Save data position tracking for unlearning
-- `saveSubdetectorLabel(data)`: Save labels for subdetector training
-- `getLabel(data_type)`: Load labels with data type filtering
+- `trainModel(shard_list, start_slice)`: Train model with sharded and sliced approach. Supports selective retraining of specific shards and slices.
+- `predict()`: Make predictions using ensemble voting across all shard models. Returns list of dictionaries with file names and predictions.
+- `unlearn()`: Remove specific training samples from the model by retraining affected shards and slices.
+- `savePosition()`: Save data position (shard and slice index) tracking for each sample to CSV file.
+- `getPosition()`: Load data position tracking from CSV file.
+- `saveSubdetectorLabel(data)`: Save labels for current subdetector training batch to CSV.
+- `saveSubdetectorName(model_name)`: Save model file paths for all subdetectors to CSV.
+- `getSubdetectorName()`: Load model file paths for all subdetectors from CSV.
+- `getLabel(path, data_type)`: Load labels with optional data type filtering. Returns list of [file_name, label] pairs.
+- `getFileName(data_type)`: Get file names with optional data type filtering. Returns list of file names.
 
 ## Output Structure
 
@@ -373,6 +399,7 @@ output/
 │       ├── shard0/
 │       │   ├── slice0.pth           # Model checkpoint for shard 0, slice 0
 │       │   ├── slice1.pth
+│       │   ├── log.txt              # Training logs for this shard
 │       │   └── ...
 │       ├── shard1/
 │       │   └── ...
@@ -380,9 +407,11 @@ output/
 │       ├── subdetector_config.json  # Configuration for subdetectors
 │       ├── position.csv             # Data position tracking
 │       ├── subdetector_name.csv     # Subdetector model names
-│       └── logging.log              # Training logs
+│       ├── score.json               # Training scores and metrics
+│       ├── predict_result.json      # Prediction results (if predict action)
+│       └── loging.log               # Main training logs
 └── predict/
-    └── result.json                  # Prediction results
+    └── result.json                  # Prediction results (if overwrite=true)
 ```
 
 ## Troubleshooting

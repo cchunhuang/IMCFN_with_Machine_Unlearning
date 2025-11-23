@@ -81,7 +81,7 @@ class IMCFN(MalwareClassifier):
         Config Parameters Used:
             - self.config.file.label: Path to CSV file containing labels
             - self.config.params.vector.save_image: Whether to save generated images
-            - self.config.folder.vectorize: Folder path to save images (if save_image is True)
+            - self.config.folder.vector: Folder path to save images (if save_image is True)
         """
         self.logger.info('Vectorizing')
         
@@ -99,7 +99,7 @@ class IMCFN(MalwareClassifier):
         self.label_idx.update({label: idx + 1 for idx, label in enumerate(labels_set)})
     
         if self.config.params.vector.save_image == True:
-            images = self.image_generator.generateImage(list(labels.keys()), self.config.folder.vectorize)
+            images = self.image_generator.generateImage(list(labels.keys()), self.config.folder.vector)
         else:
             images = self.image_generator.generateImage(list(labels.keys()))
         

@@ -1,0 +1,21 @@
+{
+    "params": {
+        "feature": {},
+        "vector": {},
+        "model": {
+            "model_name": "VGG16",
+            "batch_size": 32,
+            "learning_rate": 5e-6,
+            "train_ratio": 0.8,
+            "epochs": 30,
+            "rotation": [0, 0],
+            "width_shift": 0.0,
+            "height_shift": 0.0,
+            "zoom": [1.0, 1.0],
+            "shear": [0, 0, 0, 0],
+            "fill": null,
+            "horizontal_flip": 0
+        },
+        "predict": {}
+    }
+}
