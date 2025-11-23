@@ -11,6 +11,7 @@ Date: 2024
 
 import os
 import json
+import logging
 from MalwareClassifier import setup_logging, get_logger
 
 def setup_logger(logger_name: str, logging_config_path: str="", output_log_path: str=None):
@@ -37,6 +38,13 @@ def setup_logger(logger_name: str, logging_config_path: str="", output_log_path:
         # Override the log file path if output_log_path is specified
         if output_log_path and 'handlers' in custom_config and 'file' in custom_config['handlers']:
             custom_config['handlers']['file']['filename'] = output_log_path
+    else:
+        # If config file doesn't exist or not specified, setup basic logging
+        logger = logging.getLogger(logger_name)
+        logger.setLevel(logging.INFO)
+        logger.handlers = []
+        logger.propagate = True
+        return logger
     
     # Determine log directory
     log_dir = None
