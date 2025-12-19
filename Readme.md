@@ -91,7 +91,6 @@ This project was developed using Python 3.11.5. It is strongly recommended to us
 
 3. Choose the appropriate requirements file based on your hardware:
    - `requirements_cpu.txt`: For CPU-only systems
-   - `requirements_cuda118.txt`: For systems with CUDA 11.8
    - `requirements_cuda121.txt`: For systems with CUDA 12.1
 
    You can also choose a different PyTorch version that suits your needs.
