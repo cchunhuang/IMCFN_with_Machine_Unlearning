@@ -9,7 +9,6 @@ outputs:
     metrics: json
     predictions: csv
 paramsDefault:
-    model_name: "VGG16"
     batch_size: 32
     learning_rate: 5e-6
     train_ratio: 0.8
