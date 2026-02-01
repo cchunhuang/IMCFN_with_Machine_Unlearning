@@ -1,4 +1,4 @@
-key: im
+key: imcfn
 name: IMCFN
 version: "1.0.0"
 tasks: [train, predict]
