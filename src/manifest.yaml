@@ -3,7 +3,7 @@ name: IMCFN
 version: "1.0.0"
 tasks: [train, predict]
 inputs:
-    dataset: directory   # 從後端傳入資料夾路徑
+    dataset: directory
 outputs:
     model: file
     metrics: json
